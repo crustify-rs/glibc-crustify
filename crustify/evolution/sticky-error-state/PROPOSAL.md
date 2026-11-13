@@ -43,6 +43,21 @@ write left in the indicator, reported as a later write's:
 
 With the rule as landed, all pass, plain, under ASan, and under TSan for the stream suites.
 
+### From the module pass
+
+glibc-crustify `wave-5/batch-1/run-1`, `libio/iofwrite.c`'s module pass, found a failure the
+rule cannot see even with the state clear: one that never sets it. A line-buffered stream's
+flush can fail in the seek glibc makes before it writes (`c/libio/fileops.c:441-447`), which
+sets `errno` (`ESPIPE`) and not the indicator. `fwrite` then returns the full count, and the
+binding, following the rule, reported success where `fprintf` fails. The finding is
+`crustify/reviews/modules/libc/libio/iofwrite.c/wave-5/batch-1/equiv/a-failed-line-buffered-flush-that-sets-no-indicator-succeeds`.
+Its fix documents both unseen cases on the binding. So the rule's last clause holds only if
+it names both: a failure that leaves the state already set, and one that leaves it
+unchanged, such as a failure on a path that does not set the flag. For this proposal's
+review, the drafted sentence could end "…that such a failure goes unseen, while the state is
+already set or on a path of the library that does not set it, is documented on the binding",
+the paths found by reading where the library sets the flag.
+
 ## Destination
 
 The spec: `skills/rust/binding/symbols/SKILL.md`, Functions, the **Errors** bullet, a

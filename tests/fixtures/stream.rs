@@ -6,7 +6,10 @@ use core::ffi::{CStr, c_char, c_int, c_void};
 use core::ptr;
 use core::sync::atomic::{AtomicUsize, Ordering};
 use std::ffi::CString;
+use std::io::{self, Read, Write};
+use std::os::fd::IntoRawFd;
 use std::os::unix::ffi::OsStrExt;
+use std::os::unix::net::UnixStream;
 use std::path::PathBuf;
 use std::{fs, process, thread};
 
@@ -31,6 +34,8 @@ enum Backing {
     File(PathBuf),
     /// `/dev/full`, every write to which fails with `ENOSPC`.
     Full,
+    /// The other end of a socket pair, which receives what the stream writes.
+    Socket(UnixStream),
 }
 
 /// A C stream the test opened, closed when dropped.
@@ -103,6 +108,32 @@ impl Stream {
         }
     }
 
+    /// A stream over one end of a socket pair, `fdopen`'s in `"r+"`, from which C has read
+    /// one byte of the three the other end wrote, leaving two in the stream's buffer: what a
+    /// C caller that reads a stream and then writes it without a positioning call, which ISO C
+    /// leaves undefined and glibc allows, hands on. glibc seeks back over the unread bytes
+    /// before it writes, and a socket cannot seek: every flush fails in that seek, with
+    /// `ESPIPE`, before any write, and without setting the error indicator. Made line-buffered
+    /// first, as `line_buffered` makes a stream.
+    pub(crate) fn line_buffered_socket_after_a_read() -> Self {
+        let (ours, mut peer) = UnixStream::pair().unwrap();
+        peer.write_all(b"xyz").unwrap();
+        peer.set_nonblocking(true).unwrap();
+        let fd = ours.into_raw_fd();
+        // SAFETY: an open descriptor, which the stream takes and closes, and a NUL-terminated
+        // mode.
+        let file = unsafe { ffi::fdopen(fd, c"r+".as_ptr()) };
+        assert!(!file.is_null(), "fdopen failed");
+        let stream = Self {
+            file,
+            backing: Backing::Socket(peer),
+        }
+        .line_buffered();
+        // SAFETY: an open stream, open for reading.
+        assert_eq!(unsafe { ffi::fgetc(stream.file) }, c_int::from(b'x'));
+        stream
+    }
+
     /// The stream, borrowed for as long as the fixture keeps it open.
     pub(crate) fn handle(&self) -> FileRef<'_> {
         // SAFETY: `file` is an open stream until `drop` closes it, which the borrow of `self`
@@ -138,6 +169,18 @@ impl Stream {
         // SAFETY: an open stream nothing has read or written yet; a NULL buffer, which lets
         // glibc allocate its own, of the size given.
         let r = unsafe { ffi::setvbuf(self.file, ptr::null_mut(), mode, 8192) };
+        assert_eq!(r, 0, "setvbuf failed");
+        self
+    }
+
+    /// Makes the stream unbuffered, as `setvbuf(stream, NULL, _IONBF, 0)` does, as glibc
+    /// opens `stderr`: each write goes to the file at once. Called before anything else
+    /// touches the stream, as `setvbuf` requires.
+    pub(crate) fn unbuffered(self) -> Self {
+        let mode = c_int::try_from(ffi::_IONBF).unwrap();
+        // SAFETY: an open stream nothing has read or written yet; a NULL buffer and no size,
+        // which an unbuffered stream takes.
+        let r = unsafe { ffi::setvbuf(self.file, ptr::null_mut(), mode, 0) };
         assert_eq!(r, 0, "setvbuf failed");
         self
     }
@@ -182,8 +225,8 @@ impl Stream {
     }
 
     /// What the stream holds once flushed: an `open_memstream` stream's buffer, the bytes of
-    /// an `fmemopen` stream's storage up to its first NUL, the file's, or nothing for
-    /// `/dev/full`.
+    /// an `fmemopen` stream's storage up to its first NUL, the file's, nothing for
+    /// `/dev/full`, or what a socket's other end has received.
     pub(crate) fn contents(&self) -> Vec<u8> {
         // SAFETY: an open stream. A flush that fails, as one into full storage does, leaves
         // what reached the storage.
@@ -208,6 +251,19 @@ impl Stream {
             }
             Backing::File(path) => fs::read(path).unwrap(),
             Backing::Full => Vec::new(),
+            Backing::Socket(peer) => {
+                let mut received = Vec::new();
+                let mut chunk = [0_u8; 4096];
+                loop {
+                    match (&*peer).read(&mut chunk) {
+                        Ok(0) => break,
+                        Ok(n) => received.extend_from_slice(&chunk[..n]),
+                        Err(e) if e.kind() == io::ErrorKind::WouldBlock => break,
+                        Err(e) => panic!("reading the socket failed: {e}"),
+                    }
+                }
+                received
+            }
         }
     }
 }
@@ -222,7 +278,7 @@ impl Drop for Stream {
                 // with `free`.
                 unsafe { ffi::free(location.buf.cast::<c_void>()) };
             }
-            Backing::Fixed(_) | Backing::Full => {}
+            Backing::Fixed(_) | Backing::Full | Backing::Socket(_) => {}
             Backing::File(path) => fs::remove_file(path).unwrap(),
         }
     }

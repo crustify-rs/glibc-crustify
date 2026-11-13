@@ -7,11 +7,13 @@ pub const EBADF: i32 = 9;
 pub const EACCES: i32 = 13;
 pub const ENOTDIR: i32 = 20;
 pub const ENOSPC: i32 = 28;
+pub const ESPIPE: i32 = 29;
 pub const O_WRONLY: i32 = 1;
 pub const O_CREAT: i32 = 64;
 pub const O_EXCL: i32 = 128;
 pub const SIGABRT: i32 = 6;
 pub const _IOLBF: i32 = 1;
+pub const _IONBF: i32 = 2;
 unsafe extern "C" {
     pub fn __errno_location() -> *mut ::std::os::raw::c_int;
 }
@@ -186,6 +188,12 @@ unsafe extern "C" {
     ) -> *mut FILE;
 }
 unsafe extern "C" {
+    pub fn fdopen(
+        __fd: ::std::os::raw::c_int,
+        __modes: *const ::std::os::raw::c_char,
+    ) -> *mut FILE;
+}
+unsafe extern "C" {
     pub fn fmemopen(
         __s: *mut ::std::os::raw::c_void,
         __len: usize,
@@ -212,6 +220,9 @@ unsafe extern "C" {
         __format: *const ::std::os::raw::c_char,
         ...
     ) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn fgetc(__stream: *mut FILE) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn fwrite(

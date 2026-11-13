@@ -164,9 +164,11 @@ mod ffi_import {
     }
 
     #[cfg(test)]
-    #[expect(unsafe_code, reason = "borrows stand-in streams through the seams")]
+    #[expect(unsafe_code, reason = "borrows and locks streams through the seams")]
     mod unit_priv {
+        use core::ffi::c_char;
         use core::ptr;
+        use std::panic::{self, AssertUnwindSafe};
         use std::thread;
 
         use ffibox::{CMutSeam, CRefSeam};
@@ -236,6 +238,64 @@ mod ffi_import {
             let moved =
                 thread::scope(|s| s.spawn(move || exclusive.as_ref().as_ptr().addr()).join());
             assert_eq!(moved.unwrap(), addr);
+        }
+
+        /// Whether another thread may take the stream's lock now: `ftrylockfile` from a
+        /// thread of its own, released again at once.
+        fn is_unlocked(file: FileRef<'_>) -> bool {
+            thread::scope(|s| {
+                s.spawn(move || {
+                    let p = file.as_ptr().cast_mut();
+                    // SAFETY: an open stream for the scope, which the handle's lifetime
+                    // covers.
+                    let taken = unsafe { ffi::ftrylockfile(p) } == 0;
+                    if taken {
+                        // SAFETY: this thread took the lock just above.
+                        unsafe { ffi::funlockfile(p) };
+                    }
+                    taken
+                })
+                .join()
+                .unwrap()
+            })
+        }
+
+        #[test]
+        #[cfg_attr(miri, ignore = "calls C")]
+        fn a_hold_keeps_the_lock_until_dropped_unwinding_included() {
+            let mut buf: *mut c_char = ptr::null_mut();
+            let mut size = 0_usize;
+            // SAFETY: both out-pointers address locals that outlive the stream, which the
+            // `fclose` below closes.
+            let p = unsafe { ffi::open_memstream(&raw mut buf, &raw mut size) };
+            assert!(!p.is_null(), "open_memstream failed");
+            // SAFETY: an open stream until the `fclose` below, after the handle's last use;
+            // nothing but the holds and `is_unlocked`, which take its lock, reaches it.
+            let file = unsafe { FileRef::from_ptr(p) }.unwrap();
+
+            assert!(is_unlocked(file));
+            let hold = file.lock().unwrap();
+            assert_eq!(hold.as_ptr(), p);
+            assert!(!is_unlocked(file));
+            // Recursive: a second hold on this thread is taken at once, and the stream stays
+            // locked until the first is dropped too.
+            let inner = file.lock().unwrap();
+            drop(inner);
+            assert!(!is_unlocked(file));
+            drop(hold);
+            assert!(is_unlocked(file));
+
+            let unwound = panic::catch_unwind(AssertUnwindSafe(|| {
+                let _hold = file.lock().unwrap();
+                panic!("a panic while the stream's lock is held");
+            }));
+            assert!(unwound.is_err());
+            assert!(is_unlocked(file));
+
+            // SAFETY: an open stream, closed once, with no handle used after it.
+            assert_eq!(unsafe { ffi::fclose(p) }, 0);
+            // SAFETY: `fclose` left the stream's buffer to the caller, to free with `free`.
+            unsafe { ffi::free(buf.cast()) };
         }
     }
 }

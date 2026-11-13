@@ -310,3 +310,50 @@ fn a_stream_without_a_lock_is_refused() {
     }
     assert_eq!(errno_after, ffi::EINTR);
 }
+
+#[test]
+#[cfg_attr(miri, ignore = "calls C")]
+fn a_flush_that_fails_in_its_seek_is_reported_as_written() {
+    // The second failure the doc names that the binding cannot see: a line-buffered stream C
+    // read from and then writes, over a socket, whose flush fails in its seek back over the
+    // unread bytes, and sets no indicator.
+    let stream = Stream::line_buffered_socket_after_a_read();
+    let file = stream.handle();
+    // A first line goes to the buffer byte by byte, and the flush at its newline fails short.
+    set_errno(0);
+    let e = file.write_all(b"ab\n").unwrap_err();
+    assert_eq!(e.raw_os_error(), Some(ffi::ESPIPE));
+    assert_eq!(errno(), ffi::ESPIPE);
+    assert!(!stream.has_error());
+    // A second fits the buffer: `fwrite` returns its full count, and the call succeeds,
+    // leaving `errno` as it was.
+    set_errno(ffi::EINTR);
+    file.write_all(b"cd\n").unwrap();
+    assert_eq!(errno(), ffi::EINTR);
+    assert!(!stream.has_error());
+    assert!(stream.is_unlocked());
+    // Nothing reached the socket.
+    assert_eq!(stream.contents(), b"");
+}
+
+#[test]
+#[cfg_attr(miri, ignore = "calls C")]
+fn an_unbuffered_stream_takes_each_write_at_once() {
+    // As glibc opens `stderr`: what fits a buffer goes out during the call, so a device that
+    // takes nothing fails the first write, however short.
+    let stream = Stream::file().unbuffered();
+    let file = stream.handle();
+    file.write_all(b"status: ").unwrap();
+    file.write_all(b"ok\n").unwrap();
+    assert_eq!(stream.contents(), b"status: ok\n");
+
+    let full = Stream::full().unbuffered();
+    set_errno(0);
+    let e = full.handle().write_all(b"x").unwrap_err();
+    assert_eq!(e.raw_os_error(), Some(ffi::ENOSPC));
+    assert_eq!(errno(), ffi::ENOSPC);
+    assert!(full.has_error());
+    assert!(full.is_unlocked());
+    // Buffered, the same write succeeds, its failure left to the flush.
+    Stream::full().handle().write_all(b"x").unwrap();
+}

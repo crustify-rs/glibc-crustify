@@ -25,7 +25,10 @@ own under `crustify/tmp/`:
   does, over a scratch copy without `c/`. Its `report.py` rejects the scope, since
   `llvm-cov` prints this tree's file names relative to `src/`, so the `TOTAL` line is read
   from `llvm-cov report` itself. The compile-fail suite fails in the marked copy, which
-  only a nightly builds, and it covers nothing.
+  only a nightly builds, and it covers nothing. Its `mark.py` misses a test item whose
+  attributes span lines, so a test module's `#[expect]` is kept on one line, and the copy
+  holds the tree's package, or the script measures the workspace that encloses it
+  (`crustify/evolution/coverage-marking-misses-multiline-attributes`);
 - a wave's and a module's end gates: `testing-gates`' `end-gates`, with `--stages
   plain,asan-ubsan,tsan,miri` and with `--runner` set to a script in `crustify/tmp/`. Given
   `<variant> <cargo args>`, the script runs `cargo` with the flags above, adding
@@ -41,6 +44,8 @@ wave-4/batch-0/run-1 (`libio/stdio.c`) found the doctests failing to link under 
 `RUSTFLAGS` alone (`undefined symbol: __asan_init`), and passing with `RUSTDOCFLAGS`.
 wave-4/batch-1/run-1, its module pass, found its reproducer's ASan trace printed as bare
 addresses, and symbolized through `addr2line`.
+wave-5/batch-1/run-1, its module pass, measured `genops.rs`' test module as covered code
+under a multi-line `#[expect]`, and kept it on one line.
 
 **Scope.** Every batch until the tree gets a variant script.
 

@@ -54,3 +54,8 @@ var EBADF|ENOSPC
 # mode whose failed flush fwrite reports with a full count, and clear its error indicator.
 function setvbuf|clearerr
 var _IOLBF
+# libio/iofdopen.c, libio/getc.c: the iofwrite.c tests open a stream over a socket and read from
+# it, so that its flush seeks back over the unread bytes and fails in the seek (ESPIPE); and they
+# make a stream unbuffered, as stderr is, with setvbuf above.
+function fdopen|fgetc
+var _IONBF|ESPIPE

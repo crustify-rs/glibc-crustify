@@ -48,13 +48,21 @@ mod ffi_import {
         ///
         /// `fwrite` reports a failure by returning fewer bytes than it was given, with one
         /// exception: when the bytes fit the buffer of a line-buffered stream and end with a
-        /// newline, and the flush that newline calls for fails, it returns the full count,
-        /// though the stream's error indicator records the failure. glibc's `fprintf` reports
-        /// the same failure as one. So the call fails when `fwrite` returns a short count, and
-        /// when it returns the full count but the stream's error indicator, clear before the
-        /// call, is set after it: read with `ferror`, under the same hold of the lock. A stream
-        /// whose error indicator is already set, by an earlier failure nothing has cleared
-        /// (`clearerr`), cannot tell that exception from a success, which is what it reports.
+        /// newline, and the flush that newline calls for fails, it returns the full count.
+        /// glibc's `fprintf` reports the same failure as one. A failed write sets the stream's
+        /// error indicator, so the call fails when `fwrite` returns a short count, and when it
+        /// returns the full count but the stream's error indicator, clear before the call, is
+        /// set after it: read with `ferror`, under the same hold of the lock. Two such failures
+        /// cannot be told from a success, which is what the call reports, as `fwrite` does,
+        /// where `fprintf` fails:
+        ///
+        /// - one on a stream whose error indicator is already set, by an earlier failure nothing
+        ///   has cleared (`clearerr`); and
+        /// - one that sets no indicator: a flush that fails in the seek glibc makes before it
+        ///   writes, back over bytes read into the buffer and not yet consumed, on a stream C read
+        ///   and then wrote without a positioning call, which ISO C leaves undefined, over a file
+        ///   that cannot seek, such as a pipe or a socket (`ESPIPE`). The bytes stay in the buffer,
+        ///   and `errno` is left as it was.
         ///
         /// A failure is not retried, and the count `fwrite` returned is not reported: part of
         /// `bytes` may have reached the stream's buffer, its storage or its file, and a failed

@@ -1,0 +1,31 @@
+{
+  "paths": [
+    "src/libc/libio/iofwrite.rs",
+    "tests/equiv_pub/iofwrite.rs",
+    "tests/unit_pub/iofwrite.rs",
+    "src/libc/libio/genops.rs",
+    "tests/fixtures/stream.rs"
+  ],
+  "wave_gates": true,
+  "module_pass": true,
+  "wave": 5,
+  "batch": 1,
+  "link_unit": "libc",
+  "module": "libio/iofwrite.c",
+  "foundational": false,
+  "base_branch": "refs/heads/crustify/waves/wave-5",
+  "backend": "claude",
+  "billing": "api",
+  "model_proxy": "openrouter",
+  "args": [
+    "--model",
+    "claude-opus-5-5"
+  ],
+  "revisions": {
+    "crustify": "cc84106",
+    "wavefront": "bf21e16",
+    "ffimap": "9aa2ef1",
+    "ffibox": "9c22a73"
+  },
+  "session_id": "50fc9824-745a-4999-80a5-7e11f5a66290"
+}

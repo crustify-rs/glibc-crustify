@@ -295,3 +295,56 @@ fn a_failed_line_buffered_flush_fails_alike_after_an_earlier_failure() {
     c.clear_error();
     compare_flushing(&rust, &c, c_fwrite, &writes[1..], Flush::AtEnd);
 }
+
+#[test]
+#[cfg_attr(miri, ignore = "calls C")]
+fn an_unbuffered_stream_takes_and_fails_alike() {
+    // Unbuffered, as glibc opens `stderr`, which the parent's C writes: each write goes to the
+    // file during the call, and a failure fails the call that meets it.
+    let long = b"0123456789abcdef".repeat(1024);
+    for c_write in [c_fwrite, c_fprintf] {
+        compare(
+            &Stream::file().unbuffered(),
+            &Stream::file().unbuffered(),
+            c_write,
+            &texts(&long),
+        );
+        compare_flushing(
+            &Stream::full().unbuffered(),
+            &Stream::full().unbuffered(),
+            c_write,
+            &[b"x", b"status: ", b"failed\n", &long],
+            Flush::AtEnd,
+        );
+    }
+}
+
+#[test]
+#[cfg_attr(miri, ignore = "calls C")]
+fn a_flush_that_fails_in_its_seek_is_reported_as_fwrite_reports_it() {
+    // A line-buffered stream C read from and then writes: each flush seeks back over the two
+    // unread bytes, which a socket cannot, and fails with `ESPIPE`, setting no indicator. The
+    // first line fails short; the second fits the buffer, and `fwrite` returns its full count.
+    let writes: [&[u8]; 3] = [b"ab\n", b"cd\n", b"ef"];
+    compare_flushing(
+        &Stream::line_buffered_socket_after_a_read(),
+        &Stream::line_buffered_socket_after_a_read(),
+        c_fwrite,
+        &writes,
+        Flush::AtEnd,
+    );
+    // The departure `FileRef::write_all` documents: `fprintf` fails the second line, which
+    // the binding, seeing no indicator set, reports written.
+    let (rust, c) = (
+        Stream::line_buffered_socket_after_a_read(),
+        Stream::line_buffered_socket_after_a_read(),
+    );
+    for (bytes, rust_ok) in [(&b"ab\n"[..], false), (b"cd\n", true)] {
+        assert_eq!(rust.handle().write_all(bytes).is_ok(), rust_ok);
+        let want = c_fprintf(&c, bytes);
+        assert!(want.failed, "fprintf of {bytes:?}");
+        assert_eq!(want.errno, ffi::ESPIPE);
+        assert!(!rust.has_error() && !c.has_error(), "no indicator is set");
+    }
+    assert_eq!(rust.contents(), c.contents());
+}
