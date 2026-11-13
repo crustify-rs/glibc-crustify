@@ -13,6 +13,159 @@ unsafe extern "C" {
     pub fn __errno_location() -> *mut ::std::os::raw::c_int;
 }
 pub type __mode_t = ::std::os::raw::c_uint;
+pub type __off_t = ::std::os::raw::c_long;
+pub type __off64_t = ::std::os::raw::c_long;
+pub type FILE = _IO_FILE;
+#[repr(C)]
+#[derive(Debug)]
+pub struct _IO_marker {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug)]
+pub struct _IO_codecvt {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug)]
+pub struct _IO_wide_data {
+    _unused: [u8; 0],
+}
+pub type _IO_lock_t = ::std::os::raw::c_void;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _IO_FILE {
+    pub _flags: ::std::os::raw::c_int,
+    pub _IO_read_ptr: *mut ::std::os::raw::c_char,
+    pub _IO_read_end: *mut ::std::os::raw::c_char,
+    pub _IO_read_base: *mut ::std::os::raw::c_char,
+    pub _IO_write_base: *mut ::std::os::raw::c_char,
+    pub _IO_write_ptr: *mut ::std::os::raw::c_char,
+    pub _IO_write_end: *mut ::std::os::raw::c_char,
+    pub _IO_buf_base: *mut ::std::os::raw::c_char,
+    pub _IO_buf_end: *mut ::std::os::raw::c_char,
+    pub _IO_save_base: *mut ::std::os::raw::c_char,
+    pub _IO_backup_base: *mut ::std::os::raw::c_char,
+    pub _IO_save_end: *mut ::std::os::raw::c_char,
+    pub _markers: *mut _IO_marker,
+    pub _chain: *mut _IO_FILE,
+    pub _fileno: ::std::os::raw::c_int,
+    pub _flags2: ::std::os::raw::c_int,
+    pub _old_offset: __off_t,
+    pub _cur_column: ::std::os::raw::c_ushort,
+    pub _vtable_offset: ::std::os::raw::c_schar,
+    pub _shortbuf: [::std::os::raw::c_char; 1usize],
+    pub _lock: *mut _IO_lock_t,
+    pub _offset: __off64_t,
+    pub _codecvt: *mut _IO_codecvt,
+    pub _wide_data: *mut _IO_wide_data,
+    pub _freeres_list: *mut _IO_FILE,
+    pub _freeres_buf: *mut ::std::os::raw::c_void,
+    pub __pad5: usize,
+    pub _mode: ::std::os::raw::c_int,
+    pub _unused2: [::std::os::raw::c_char; 20usize],
+}
+#[allow(clippy::unnecessary_operation, clippy::identity_op)]
+const _: () = {
+    ["Size of _IO_FILE"][::std::mem::size_of::<_IO_FILE>() - 216usize];
+    ["Alignment of _IO_FILE"][::std::mem::align_of::<_IO_FILE>() - 8usize];
+    [
+        "Offset of field: _IO_FILE::_flags",
+    ][::std::mem::offset_of!(_IO_FILE, _flags) - 0usize];
+    [
+        "Offset of field: _IO_FILE::_IO_read_ptr",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_read_ptr) - 8usize];
+    [
+        "Offset of field: _IO_FILE::_IO_read_end",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_read_end) - 16usize];
+    [
+        "Offset of field: _IO_FILE::_IO_read_base",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_read_base) - 24usize];
+    [
+        "Offset of field: _IO_FILE::_IO_write_base",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_write_base) - 32usize];
+    [
+        "Offset of field: _IO_FILE::_IO_write_ptr",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_write_ptr) - 40usize];
+    [
+        "Offset of field: _IO_FILE::_IO_write_end",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_write_end) - 48usize];
+    [
+        "Offset of field: _IO_FILE::_IO_buf_base",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_buf_base) - 56usize];
+    [
+        "Offset of field: _IO_FILE::_IO_buf_end",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_buf_end) - 64usize];
+    [
+        "Offset of field: _IO_FILE::_IO_save_base",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_save_base) - 72usize];
+    [
+        "Offset of field: _IO_FILE::_IO_backup_base",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_backup_base) - 80usize];
+    [
+        "Offset of field: _IO_FILE::_IO_save_end",
+    ][::std::mem::offset_of!(_IO_FILE, _IO_save_end) - 88usize];
+    [
+        "Offset of field: _IO_FILE::_markers",
+    ][::std::mem::offset_of!(_IO_FILE, _markers) - 96usize];
+    [
+        "Offset of field: _IO_FILE::_chain",
+    ][::std::mem::offset_of!(_IO_FILE, _chain) - 104usize];
+    [
+        "Offset of field: _IO_FILE::_fileno",
+    ][::std::mem::offset_of!(_IO_FILE, _fileno) - 112usize];
+    [
+        "Offset of field: _IO_FILE::_flags2",
+    ][::std::mem::offset_of!(_IO_FILE, _flags2) - 116usize];
+    [
+        "Offset of field: _IO_FILE::_old_offset",
+    ][::std::mem::offset_of!(_IO_FILE, _old_offset) - 120usize];
+    [
+        "Offset of field: _IO_FILE::_cur_column",
+    ][::std::mem::offset_of!(_IO_FILE, _cur_column) - 128usize];
+    [
+        "Offset of field: _IO_FILE::_vtable_offset",
+    ][::std::mem::offset_of!(_IO_FILE, _vtable_offset) - 130usize];
+    [
+        "Offset of field: _IO_FILE::_shortbuf",
+    ][::std::mem::offset_of!(_IO_FILE, _shortbuf) - 131usize];
+    [
+        "Offset of field: _IO_FILE::_lock",
+    ][::std::mem::offset_of!(_IO_FILE, _lock) - 136usize];
+    [
+        "Offset of field: _IO_FILE::_offset",
+    ][::std::mem::offset_of!(_IO_FILE, _offset) - 144usize];
+    [
+        "Offset of field: _IO_FILE::_codecvt",
+    ][::std::mem::offset_of!(_IO_FILE, _codecvt) - 152usize];
+    [
+        "Offset of field: _IO_FILE::_wide_data",
+    ][::std::mem::offset_of!(_IO_FILE, _wide_data) - 160usize];
+    [
+        "Offset of field: _IO_FILE::_freeres_list",
+    ][::std::mem::offset_of!(_IO_FILE, _freeres_list) - 168usize];
+    [
+        "Offset of field: _IO_FILE::_freeres_buf",
+    ][::std::mem::offset_of!(_IO_FILE, _freeres_buf) - 176usize];
+    [
+        "Offset of field: _IO_FILE::__pad5",
+    ][::std::mem::offset_of!(_IO_FILE, __pad5) - 184usize];
+    [
+        "Offset of field: _IO_FILE::_mode",
+    ][::std::mem::offset_of!(_IO_FILE, _mode) - 192usize];
+    [
+        "Offset of field: _IO_FILE::_unused2",
+    ][::std::mem::offset_of!(_IO_FILE, _unused2) - 196usize];
+};
+impl Default for _IO_FILE {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
 unsafe extern "C" {
     pub fn malloc(__size: usize) -> *mut ::std::os::raw::c_void;
 }

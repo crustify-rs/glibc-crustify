@@ -1,0 +1,7 @@
+error: lifetime may not live long enough
+ --> tests/ub_safe/compile_fail/genops_file_ref_outlives_its_stream.rs
+  |
+  | fn keep(stream: FileRef<'_>) -> FileRef<'static> {
+  |         ------ has type `FileRef<'1>`
+  |     stream
+  |     ^^^^^^ returning this value requires that `'1` must outlive `'static`

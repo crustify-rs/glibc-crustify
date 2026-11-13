@@ -1,0 +1,9 @@
+error[E0382]: use of moved value: `stream`
+ --> tests/ub_safe/compile_fail/genops_file_mut_is_exclusive.rs
+  |
+  | fn twice(stream: FileMut<'_>) -> (FileMut<'_>, FileMut<'_>) {
+  |          ------ move occurs because `stream` has type `FileMut<'_>`, which does not implement the `Copy` trait
+  |     (stream, stream)
+  |      ------  ^^^^^^ value used here after move
+  |      |
+  |      value moved here

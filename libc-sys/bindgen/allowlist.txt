@@ -4,6 +4,11 @@
 # parseutils.c consume (crustify-rs/ffmpeg-bindings).
 type tm
 
+# libio/genops.c: the stream type, which libgit2's cli/opt.c and libavformat's dump.c hand
+# a caller's stream as, and which fprintf and stderr name (crustify-rs/libgit2-bindings,
+# crustify-rs/ffmpeg-bindings).
+type _IO_FILE|FILE
+
 # csu/errno-loc.c: the calling thread's errno, which libgit2's util/errors.c and its tests
 # read and write (crustify-rs/libgit2-bindings).
 function __errno_location

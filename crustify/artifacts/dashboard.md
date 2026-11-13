@@ -51,23 +51,23 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `<n>` non-test, `<n>` tests; **C LoC** — `<n>`
+- **Rust LoC** — `349` non-test, `251` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
 | | count | share | C LoC coverage | Rust LoC coverage |
 |---|---:|---:|---:|---:|
-| UB safe tests | `<n>` | — | `<n>`% | `<n>`% |
-| UB unsafe tests | `<n>` | — | `<n>`% | `<n>`% |
-| Equiv tests | `<n>` | — | `<n>`% | `<n>`% |
-| Unit tests | `<n>` | — | `<n>`% | `<n>`% |
-| **Total tests** | **`<n>`** | — | **`<n>`%** | **`<n>`%** |
-| total types | `<n>` | — | — | — |
-| ported types | `<n>` | `<n>`% | — | — |
-| wrapped types | `<n>` | `<n>`% | — | — |
-| total symbols | `<n>` | — | — | — |
-| ported symbols | `<n>` | `<n>`% | — | — |
-| wrapped symbols | `<n>` | `<n>`% | — | — |
+| UB safe tests | `6` | — | — | `58.00`% |
+| UB unsafe tests | `0` | — | — | — |
+| Equiv tests | `0` | — | — | — |
+| Unit tests | `7` | — | — | `100.00`% |
+| **Total tests** | **`13`** | — | — | **`100.00`%** |
+| total types | `2` | — | — | — |
+| ported types | `0` | `0`% | — | — |
+| wrapped types | `2` | `100`% | — | — |
+| total symbols | `3` | — | — | — |
+| ported symbols | `0` | `0`% | — | — |
+| wrapped symbols | `1` | `33`% | — | — |
 
 ### Module stats
 
@@ -136,24 +136,24 @@ sums them.
 
 ### Batches — wrap
 
-`<provider>/<model>` via `<backend>`.
+`openrouter/anthropic/claude-opus-5.5` via `claude`.
 
 | module | wave | batch | pass | types | fields | +LoC | cov (C/Rust) | $ | tokens | wall | $/type | $/field |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/libio/genops.c` | `2` | `0` | first | `1` | `0` | `+335/-0` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | — |
 | `<link-unit>/<module>` | `<n>` | `<n>` | review | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
-| **Σ first** |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ first** |  |  |  | **`1`** | **`0`** | **`+335/-0`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | — |
 | **Σ review** |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 
 ### Batches — wrap: tests
 
-`<provider>/<model>` via `<backend>`.
+`openrouter/anthropic/claude-opus-5.5` via `claude`.
 
 | module | wave | batch | pass | +UB safe tests (+C/+Rust pp) | +UB unsafe tests (+C/+Rust pp) | +equiv tests (+C/+Rust pp) | +unit tests (+C/+Rust pp) |
 |---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | first | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
+| `libc/libio/genops.c` | `2` | `0` | first | `+3` (—/`+0.00` pp) | `+0` (—/`+0.00` pp) | `+0` (—/`+0.00` pp) | `+3` (—/`+0.00` pp) |
 | `<link-unit>/<module>` | `<n>` | `<n>` | review | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
-| **Σ first** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
+| **Σ first** |  |  |  | **`+3` (—/`+0.00` pp)** | **`+0` (—/`+0.00` pp)** | **`+0` (—/`+0.00` pp)** | **`+3` (—/`+0.00` pp)** |
 | **Σ review** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
 
 ### Batches — port
@@ -184,10 +184,10 @@ Deterministic `ffimap`; no model.
 
 | module | wave | batch | objective | pass | pub raw ptr (safe) | pub raw ptr | pub void ptr | pub unsafe fn | C borrow | slice borrow | unsafe loc % | unsafe blocks | Send/Sync | C by value | Drop/Clone | deref outside impl |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
+| `libc/libio/genops.c` | `2` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-3.18` pp | `+2` | `+6` | `+1` | `+1` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
-| **Σ first** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
+| **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-3.18` pp** | **`+2`** | **`+6`** | **`+1`** | **`+1`** | **`±0`** |
 | **Σ review** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
 
 ### Batches — review: PoC + reports
@@ -328,3 +328,19 @@ As its parents, `crustify-rs/ffmpeg-bindings` and `crustify-rs/libgit2-bindings`
 settings leave the parallelism to the assistant, which decides it from the host's resources
 and the workloads sharing it, and name the campaign's commit identity: Marius Momeu as the
 author, with Crustify as the co-author.
+
+### Wave 2: `FILE`, and the cells a system libc leaves empty
+
+`libio/genops.c`'s wave 2 binds `_IO_FILE` and its typedef `FILE` as one opaque type,
+`File`, with its borrowed handles and no owner. Its row's `+LoC` counts the regenerated
+raw bindings (153 lines) with the safe module and the tests. Its three `+UB safe tests` are
+compile-fail cases of the one `compile_fail` test, so the suite's `#[test]` count in
+`Coverage stats` does not move. glibc is not built, so every C coverage cell is `—`. The
+Rust figure is line coverage over `src/`, measured on the pinned nightly with
+`-C instrument-coverage`. `File`'s code is the expansion of ffibox's `define_ctype!`,
+which `llvm-cov` counts at the macro's source, outside `src/`, so the batch moves no Rust
+figure. `C LoC` stays unmeasured: there is no wavefront database over glibc. `Rust LoC`
+counts nonblank, noncomment lines of `src/`, `tests/` and `libc-sys/` (its generated
+`bindings.rs` left out), split at `#[cfg(test)]` modules and `tests/`. The safety audit's
+`C by value` (+1) is `File`'s layout field, and its `Drop/Clone` (+1) the `Clone` that
+`FileRef` derives.

@@ -1,0 +1,5 @@
+error[E0599]: no associated function or constant named `zeroed` found for struct `glibc_bindings::libc::libio::genops::File` in the current scope
+ --> tests/ub_safe/compile_fail/genops_file_has_no_value.rs
+  |
+  |     let _stream = File::zeroed();
+  |                         ^^^^^^ associated function or constant not found in `glibc_bindings::libc::libio::genops::File`
