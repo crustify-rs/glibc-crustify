@@ -27,3 +27,7 @@ var SIGABRT
 function malloc|realloc|free
 function strlen
 function umask
+
+# libio/iofopen.c, libio/iofclose.c: what this crate's tests call raw: a second open stream,
+# which the stdio.c tests point `stderr` at, as a program redirecting it does.
+function fopen|fclose

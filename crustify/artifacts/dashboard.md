@@ -51,17 +51,17 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `364` non-test, `340` tests; **C LoC** — `<n>`
+- **Rust LoC** — `364` non-test, `371` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
 | | count | share | C LoC coverage | Rust LoC coverage |
 |---|---:|---:|---:|---:|
-| UB safe tests | `8` | — | — | `61.11`% |
-| UB unsafe tests | `0` | — | — | — |
-| Equiv tests | `1` | — | — | `7.41`% |
-| Unit tests | `9` | — | — | `100.00`% |
-| **Total tests** | **`18`** | — | — | **`100.00`%** |
+| UB safe tests | `6` | — | — | `53.70`% |
+| UB unsafe tests | `2` | — | — | `7.41`% |
+| Equiv tests | `2` | — | — | `7.41`% |
+| Unit tests | `7` | — | — | `92.59`% |
+| **Total tests** | **`17`** | — | — | **`100.00`%** |
 | total types | `2` | — | — | — |
 | ported types | `0` | `0`% | — | — |
 | wrapped types | `2` | `100`% | — | — |
@@ -209,9 +209,9 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/libio/stdio.c` | `4` | `0` | wrap | first | `1` | `172` | `+172/-0` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/libio/stdio.c` | `4` | `1` | wrap | review | `1` | `196` | `+196/-112` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | **Σ first** |  |  |  |  | **`1`** | **`172`** | **`+172/-0`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
-| **Σ review** |  |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ review** |  |  |  |  | **`1`** | **`196`** | **`+196/-112`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 
 ### Batches: tests
 
@@ -220,9 +220,9 @@ Deterministic `ffimap`; no model.
 | module | wave | batch | pass | +UB safe tests (+C/+Rust pp) | +UB unsafe tests (+C/+Rust pp) | +equiv tests (+C/+Rust pp) | +unit tests (+C/+Rust pp) |
 |---|---|---|---|---|---|---|---|
 | `libc/libio/stdio.c` | `4` | `0` | first | `+2` (—/`+3.11` pp) | `+0` (—/`+0.00` pp) | `+1` (—/`+7.41` pp) | `+2` (—/`+0.00` pp) |
-| `<link-unit>/<module>` | `<n>` | `<n>` | review | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
+| `libc/libio/stdio.c` | `4` | `1` | review | `-1` (—/`-7.41` pp) | `+2` (—/`+7.41` pp) | `+1` (—/`+0.00` pp) | `-2` (—/`-7.41` pp) |
 | **Σ first** |  |  |  | **`+2` (—/`+3.11` pp)** | **`+0` (—/`+0.00` pp)** | **`+1` (—/`+7.41` pp)** | **`+2` (—/`+0.00` pp)** |
-| **Σ review** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
+| **Σ review** |  |  |  | **`-1` (—/`-7.41` pp)** | **`+2` (—/`+7.41` pp)** | **`+1` (—/`+0.00` pp)** | **`-2` (—/`-7.41` pp)** |
 
 ### Batches: safety audit
 
@@ -232,9 +232,9 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/libio/stdio.c` | `4` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-0.43` pp | `+2` | `±0` | `±0` | `±0` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
+| `libc/libio/stdio.c` | `4` | `1` | wrap | review | `±0` | `±0` | `±0` | `+1` | `±0` | `±0` | `±0.00` pp | `±0` | `±0` | `±0` | `±0` | `±0` |
 | **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-0.43` pp** | **`+2`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
-| **Σ review** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
+| **Σ review** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`+1`** | **`±0`** | **`±0`** | **`±0.00` pp** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
 
 ### Batches — review: PoC + reports
 
@@ -242,8 +242,8 @@ Deterministic `ffimap`; no model.
 
 | module | wave | batch | +lifecycle | +unsafe | +UB safe | +UB unsafe | +equiv | +internal | +conventions | +misc | total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `<link-unit>/<module>` | `<n>` | `<n>` | — | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `<n>` |
-| **Σ** |  |  | — | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`<n>`** |
+| `libc/libio/stdio.c` | `4` | `1` | — | `+0` | `+0` | `+0` | `+0` | `+1` | `+0` | `+0` | `1` |
+| **Σ** |  |  | — | **`+0`** | **`+0`** | **`+0`** | **`+0`** | **`+1`** | **`+0`** | **`+0`** | **`1`** |
 
 ## Notes
 
@@ -381,3 +381,25 @@ covered. A suite's figure is the share of those 54 lines that suite covers alone
 safety audit's `unsafe blocks` (+2) are the global's read and the stream's borrow, both in
 `ffi_import`. No other metric moved. The API measure, `ffimap api diff`, finds
 `glb::stderr` `new` and the other modules `kept`.
+
+### Wave 4's module pass: `stderr` becomes an unsafe accessor
+
+`libio/stdio.c`'s only review, `wave-4/batch-1`, found the safe `stderr() ->
+FileRef<'static>` unsound. glibc's `stderr` is a variable its manual lets a program set,
+and its example closes a standard stream and points the variable at one `fopen` opened.
+`fclose` frees such a stream, so a kept `'static` handle outlives it. The reproducer shows
+a heap-use-after-free under ASan from the safe call. The finding is a `contracts` one of the
+`ffi_import` region, filed under `+internal` as wave 2's are. The fix makes `stderr` `unsafe
+fn stderr<'a>() -> FileRef<'a>`, its `# Safety` section moving onto the caller what the
+safe function assumed of the program. `ffimap api diff` classifies `glb::stderr`
+`changed`, kept for soundness. `st::_IO_FILE` and `tdf::FILE` are `kept`. The safety audit's
+`pub unsafe fn` (+1) is that accessor. No other metric moved. The tests moved with the API:
+the two `ub_safe` tests went to a new `ub_unsafe` suite, and the two `unit_pub` tests and
+their suite were removed, since `unit_pub` forbids `unsafe_code` and `equiv_pub` asserts the
+same against C. `equiv_pub` gained a test that C's reassignment of `stderr` is followed, for
+which the raw bindings gain `fopen` and `fclose`, test-only. A compile-fail case keeps the
+safe call rejected. Hence the tests row's negative cells: each suite's count and Rust
+figure are as measured over `src/` (54 lines) before and after. `stdio.rs`'s 4 lines moved
+from the `ub_safe` and `unit_pub` runs to `ub_unsafe`'s, and the joint figure stays
+`100.00`%. The row's `+LoC` counts the Rust tree's `.rs` changes, the regenerated
+bindings' 9 lines included. The reproducer's 78 lines, in the reviews dir, are left out.

@@ -170,6 +170,15 @@ unsafe extern "C" {
     pub static mut stderr: *mut FILE;
 }
 unsafe extern "C" {
+    pub fn fclose(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn fopen(
+        __filename: *const ::std::os::raw::c_char,
+        __modes: *const ::std::os::raw::c_char,
+    ) -> *mut FILE;
+}
+unsafe extern "C" {
     pub fn malloc(__size: usize) -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
