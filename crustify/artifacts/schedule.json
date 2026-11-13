@@ -293,7 +293,7 @@
       "foundational": false,
       "layer": 1,
       "sublayer": 0,
-      "status": "todo",
+      "status": "wip",
       "depends_on": {
         "scheduled": [
           2
@@ -315,7 +315,40 @@
         }
       ],
       "packed_with": null,
-      "batches": []
+      "batches": [
+        {
+          "index": 0,
+          "link_unit": "libc",
+          "module": "stdio-common/fprintf.c",
+          "foundational": false,
+          "kind": "wrap",
+          "status": "done",
+          "items": [
+            {
+              "name": "fprintf",
+              "defined_in": "stdio-common/fprintf.c",
+              "kind": "function",
+              "field_users": [],
+              "typedefs": [],
+              "home": "src/libc/stdio_common/fprintf.rs"
+            }
+          ],
+          "commits": [
+            "53dd7764ee7bd9beb7e731dfbc76e066c7a6e92b"
+          ]
+        },
+        {
+          "index": 1,
+          "link_unit": "libc",
+          "module": "stdio-common/fprintf.c",
+          "foundational": false,
+          "kind": "review",
+          "status": "wip",
+          "reviews": [],
+          "module_pass": true,
+          "commits": []
+        }
+      ]
     },
     {
       "index": 4,
@@ -324,7 +357,7 @@
       "foundational": false,
       "layer": 1,
       "sublayer": 0,
-      "status": "todo",
+      "status": "done",
       "depends_on": {
         "scheduled": [
           2
@@ -346,7 +379,43 @@
         }
       ],
       "packed_with": null,
-      "batches": []
+      "batches": [
+        {
+          "index": 0,
+          "link_unit": "libc",
+          "module": "libio/stdio.c",
+          "foundational": false,
+          "kind": "wrap",
+          "status": "done",
+          "items": [
+            {
+              "name": "stderr",
+              "defined_in": "libio/stdio.c",
+              "kind": "global",
+              "field_users": [],
+              "typedefs": [],
+              "home": "src/libc/libio/stdio.rs"
+            }
+          ],
+          "commits": [
+            "2a792a888f691d9f1799eae69bccf5f37c0e17df"
+          ]
+        },
+        {
+          "index": 1,
+          "link_unit": "libc",
+          "module": "libio/stdio.c",
+          "foundational": false,
+          "kind": "review",
+          "status": "done",
+          "reviews": [],
+          "module_pass": true,
+          "commits": [
+            "42eecee5c1ca27108b4cd90314748f32c84af457",
+            "a5448ee6e15d49a2350ebf9191ab453970a4d0d3"
+          ]
+        }
+      ]
     }
   ]
 }
