@@ -115,8 +115,8 @@ the corrections it made to what earlier runs committed.
 | run | modules changed | items moved | wavefront artifacts changed | reports | $ | tokens | wall |
 |---|---:|---:|---|---:|---|---|---|
 | 1 | `5` | `0` | none | `0` | `$<n>` | `<n>M` | `<n>m<n>s` |
-| 2 | `<n>` | `<n>` | `<files>` | `<n>` | `$<n>` | `<n>M` | `<n>m<n>s` |
-| **Σ** | **`5`** | **`0`** | | **`0`** | **`$<n>`** | **`<n>M`** | **`<n>m<n>s`** |
+| 2 | `1` | `0` | none | `3` | `$<n>` | `<n>M` | `<n>m<n>s` |
+| **Σ** | **`6`** | **`0`** | | **`3`** | **`$<n>`** | **`<n>M`** | **`<n>m<n>s`** |
 
 ## Side campaigns
 

@@ -392,6 +392,82 @@
               "function_pointers": 0
             }
           }
+        },
+        {
+          "index": 5,
+          "name": "libio/iofwrite.c",
+          "status": "todo",
+          "foundational": false,
+          "depends_on": [
+            {
+              "link_unit": "libc",
+              "module": "libio/genops.c",
+              "foundational": false,
+              "outgoing_edges": 1,
+              "incoming_edges": 0,
+              "counters": {
+                "structs": 1,
+                "functions": 0,
+                "global_variables": 0,
+                "unions": 0,
+                "function_pointers": 0
+              }
+            }
+          ],
+          "translation_unit": {
+            "path": "libio/iofwrite.c",
+            "items": {
+              "included": [],
+              "excluded": []
+            }
+          },
+          "internal_headers": [],
+          "api_headers": [
+            {
+              "path": "libio/stdio.h",
+              "items": {
+                "included": [
+                  "fwrite"
+                ],
+                "excluded": []
+              }
+            }
+          ],
+          "tests": [],
+          "objective": {
+            "objective": "wrap",
+            "rust_equivalent": {
+              "std": {
+                "library": [
+                  "std::io::Write"
+                ],
+                "feature_parity": "partial",
+                "notes": "writes bytes to a sink Rust owns, not into a C stream's buffer: what the remaining C writes to the same stream is ordered with it only by flushes, and the stream's locking, error indicator and orientation are not reached"
+              },
+              "crates": []
+            }
+          },
+          "counters": {
+            "implementation": {
+              "files": 1,
+              "loc": 20,
+              "structs": 0,
+              "functions": 1,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            },
+            "api": {
+              "files": 1,
+              "loc": 2,
+              "structs": 0,
+              "opaque_structs": 0,
+              "functions": 1,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            }
+          }
         }
       ]
     }

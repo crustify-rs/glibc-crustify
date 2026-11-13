@@ -58,6 +58,17 @@ or the first plan of another side campaign with landings before its schedule (zl
 openssl- and pcre2-crustify have no plan either), would show whether the wording leads it
 to the same records.
 
+`planner/run-2` (2026-11-13) is the second planner run. It kept waves 0 and 1 as run 1
+recorded them, which the change's rule (1) gives, and moved none of their fields. It
+decomposed its one new module, `libio/iofwrite.c`, as rule (2) words it. `fwrite`'s
+public signature reaches `_IO_FILE` alone, so the module's one record is on
+`libio/genops.c`, 1 edge. Its body's callees (`_IO_sputn` through the stream's vtable,
+`_IO_fwide` of `libio/iofwide.c`, the lock macros) became no modules. Without the rule,
+`decomposition` §2's producer closure would have added them. So the wording leads a
+second run to the records the first wrote by hand. Neither rule is made here: the
+proposal is an improvement, and the settings give no `evolution` answer, so the default
+`repair` lands none. Rule (1) is on `schedule-schema`, which is not the planner's.
+
 ## Review
 
 Not reviewed.

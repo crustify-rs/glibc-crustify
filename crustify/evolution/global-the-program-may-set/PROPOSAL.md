@@ -49,6 +49,13 @@ compile (`E0133`), which `tests/ub_safe/compile_fail/stdio_stderr_is_lent_by_no_
 keeps. The workspace's tests pass plain and under ASan and TSan, and Miri passes per test
 binary.
 
+Plan side: `planner/run-2` (2026-11-13) withdrew run 1's shape for `stderr` as a plan
+correction
+(`crustify/reviews/planner/modules/stderr-planned-as-a-safe-static-handle/report.md`).
+The plan now names the entity alone, and leaves a global's discipline to this section of
+`binding-symbols`. `decomposition` states no access discipline, so the proposal asks
+nothing of it.
+
 ## Review
 
 Not reviewed.
