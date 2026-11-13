@@ -13,6 +13,10 @@ type _IO_FILE|FILE
 # read and write (crustify-rs/libgit2-bindings).
 function __errno_location
 
+# libio/stdio.c: the standard error stream, which libgit2's deps/llhttp/api.c writes
+# (crustify-rs/libgit2-bindings).
+var stderr
+
 # The errno values, open flags and signal numbers libgit2-bindings' tests use.
 var ENOENT|EACCES|EPERM|EINTR|ENOTDIR
 var O_WRONLY|O_CREAT|O_EXCL

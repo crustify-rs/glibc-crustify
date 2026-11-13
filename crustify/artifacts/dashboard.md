@@ -51,23 +51,23 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `349` non-test, `257` tests; **C LoC** — `<n>`
+- **Rust LoC** — `364` non-test, `340` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
 | | count | share | C LoC coverage | Rust LoC coverage |
 |---|---:|---:|---:|---:|
-| UB safe tests | `6` | — | — | `58.00`% |
+| UB safe tests | `8` | — | — | `61.11`% |
 | UB unsafe tests | `0` | — | — | — |
-| Equiv tests | `0` | — | — | — |
-| Unit tests | `7` | — | — | `100.00`% |
-| **Total tests** | **`13`** | — | — | **`100.00`%** |
+| Equiv tests | `1` | — | — | `7.41`% |
+| Unit tests | `9` | — | — | `100.00`% |
+| **Total tests** | **`18`** | — | — | **`100.00`%** |
 | total types | `2` | — | — | — |
 | ported types | `0` | `0`% | — | — |
 | wrapped types | `2` | `100`% | — | — |
 | total symbols | `3` | — | — | — |
 | ported symbols | `0` | `0`% | — | — |
-| wrapped symbols | `1` | `33`% | — | — |
+| wrapped symbols | `2` | `67`% | — | — |
 
 ### Module stats
 
@@ -203,25 +203,25 @@ Deterministic `ffimap`; no model.
 
 ### Batches
 
-`<provider>/<model>` via `<backend>`.
+`openrouter/anthropic/claude-opus-5.5` via `claude`.
 
 | module | wave | batch | objective | pass | symbols | loc | +LoC | cov (C/Rust) | $ | tokens | wall | $/symbol | $/loc |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/libio/stdio.c` | `4` | `0` | wrap | first | `1` | `172` | `+172/-0` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
-| **Σ first** |  |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ first** |  |  |  |  | **`1`** | **`172`** | **`+172/-0`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 | **Σ review** |  |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 
 ### Batches: tests
 
-`<provider>/<model>` via `<backend>`.
+`openrouter/anthropic/claude-opus-5.5` via `claude`.
 
 | module | wave | batch | pass | +UB safe tests (+C/+Rust pp) | +UB unsafe tests (+C/+Rust pp) | +equiv tests (+C/+Rust pp) | +unit tests (+C/+Rust pp) |
 |---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | first | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
+| `libc/libio/stdio.c` | `4` | `0` | first | `+2` (—/`+3.11` pp) | `+0` (—/`+0.00` pp) | `+1` (—/`+7.41` pp) | `+2` (—/`+0.00` pp) |
 | `<link-unit>/<module>` | `<n>` | `<n>` | review | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
-| **Σ first** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
+| **Σ first** |  |  |  | **`+2` (—/`+3.11` pp)** | **`+0` (—/`+0.00` pp)** | **`+1` (—/`+7.41` pp)** | **`+2` (—/`+0.00` pp)** |
 | **Σ review** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
 
 ### Batches: safety audit
@@ -230,10 +230,10 @@ Deterministic `ffimap`; no model.
 
 | module | wave | batch | objective | pass | pub raw ptr (safe) | pub raw ptr | pub void ptr | pub unsafe fn | C borrow | slice borrow | unsafe loc % | unsafe blocks | Send/Sync | C by value | Drop/Clone | deref outside impl |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
+| `libc/libio/stdio.c` | `4` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-0.43` pp | `+2` | `±0` | `±0` | `±0` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
-| **Σ first** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
+| **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-0.43` pp** | **`+2`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
 | **Σ review** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
 
 ### Batches — review: PoC + reports
@@ -363,3 +363,21 @@ in the Types tables, and its API measure (`ffimap api diff`) keeps both items. T
 coverage was measured again, over `src/`, as the earlier batch measured it: `100.00`% (50
 of 50 lines), unchanged, since the landing changes no executable line. No safety-audit
 counter moved.
+
+### Wave 4: `stderr`, the first symbol
+
+`libio/stdio.c`'s wave 4 binds the global `stderr` as `stderr() -> FileRef<'static>`, which
+reads C's `stderr` on every call, as C's expression does, and borrows the stream it names
+for the rest of the program. Its doc states what the `'static` borrow assumes: no write to
+`stderr` while another thread may read it, no `fclose` or failing `freopen` of the stream,
+and the stream's internal locking left alone. No C of glibc's library or of either parent
+breaks these. The raw bindings gain `var stderr`, and the row's `+LoC` counts their 3 lines
+with the safe module and the tests. The anchor ``/// Wraps `glb::stderr` `` carries no
+`#[doc(alias)]`, because rustc rejects an alias equal to the item's name; proposal
+`doc-alias-equal-to-name` covers this. Its tests are 2 `ub_safe`, 2 `unit_pub` and 1
+`equiv_pub`, the first `equiv_pub` suite. All of them read the C global, so they carry Miri's
+ignore mark. The Rust figures were measured as before, over `src/`, now 54 lines, all
+covered. A suite's figure is the share of those 54 lines that suite covers alone. The
+safety audit's `unsafe blocks` (+2) are the global's read and the stream's borrow, both in
+`ffi_import`. No other metric moved. The API measure, `ffimap api diff`, finds
+`glb::stderr` `new` and the other modules `kept`.

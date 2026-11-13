@@ -2,6 +2,7 @@
 #![forbid(unsafe_code)]
 
 mod errno_loc;
+mod stdio;
 mod struct_tm_h;
 
 /// Programs under `compile_fail/` must be rejected by the compiler.

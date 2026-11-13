@@ -15,9 +15,10 @@ own under `crustify/tmp/`:
 - format: `cargo +<the workspace's nightly> fmt --all -- --check`, since `rustfmt.toml`
   uses nightly-only options;
 - ASan: on that nightly, `--target x86_64-unknown-linux-gnu`, with
-  `RUSTFLAGS="-Zsanitizer=address -Cforce-frame-pointers=yes"`; TSan: the same with
-  `-Zsanitizer=thread` and `-Zbuild-std`. They instrument the Rust alone, since the
-  system's glibc is not instrumented, so TSan sees no race inside glibc;
+  `RUSTFLAGS="-Zsanitizer=address -Cforce-frame-pointers=yes"`, and the same flags in
+  `RUSTDOCFLAGS`, without which the doctests fail to link against the ASan runtime; TSan:
+  the same with `-Zsanitizer=thread` and `-Zbuild-std`. They instrument the Rust alone,
+  since the system's glibc is not instrumented, so TSan sees no race inside glibc;
 - coverage: Rust only, measured as the parent's `crustify/scripts/coverage/baseline.sh`
   does, over a scratch copy without `c/`. Its `report.py` rejects the scope, since
   `llvm-cov` prints this tree's file names relative to `src/`, so the `TOTAL` line is read
@@ -32,5 +33,7 @@ own under `crustify/tmp/`:
 
 **Evidence.** wave-2/batch-0/run-1 (`libio/genops.c`) worked these out by hand.
 wave-2/batch-1/run-1, its module pass, wrote the `end-gates` runner by hand too.
+wave-4/batch-0/run-1 (`libio/stdio.c`) found the doctests failing to link under ASan with
+`RUSTFLAGS` alone (`undefined symbol: __asan_init`), and passing with `RUSTDOCFLAGS`.
 
 **Scope.** Every batch until the tree gets a variant script.

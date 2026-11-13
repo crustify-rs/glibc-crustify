@@ -167,6 +167,9 @@ impl Default for _IO_FILE {
     }
 }
 unsafe extern "C" {
+    pub static mut stderr: *mut FILE;
+}
+unsafe extern "C" {
     pub fn malloc(__size: usize) -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
