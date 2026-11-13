@@ -32,7 +32,7 @@ members = [".", "libc-sys"]
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.99"
+rust-version = "1.100"
 repository = "https://github.com/crustify-rs/glibc-bindings"
 license = "LGPL-2.1-or-later"
 publish = false
