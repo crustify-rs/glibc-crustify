@@ -1,0 +1,314 @@
+{
+  "schema_version": 6,
+  "modules": [
+    {
+      "link_unit": "libc",
+      "module": "time/bits/types/struct_tm.h",
+      "foundational": false,
+      "layer": 0,
+      "waves": [
+        0
+      ],
+      "depends_on": {
+        "scheduled": [],
+        "cut": [],
+        "external": []
+      }
+    },
+    {
+      "link_unit": "libc",
+      "module": "csu/errno-loc.c",
+      "foundational": false,
+      "layer": 0,
+      "waves": [
+        1
+      ],
+      "depends_on": {
+        "scheduled": [],
+        "cut": [],
+        "external": []
+      }
+    },
+    {
+      "link_unit": "libc",
+      "module": "libio/genops.c",
+      "foundational": false,
+      "layer": 0,
+      "waves": [
+        2
+      ],
+      "depends_on": {
+        "scheduled": [],
+        "cut": [],
+        "external": []
+      }
+    },
+    {
+      "link_unit": "libc",
+      "module": "stdio-common/fprintf.c",
+      "foundational": false,
+      "layer": 1,
+      "waves": [
+        3
+      ],
+      "depends_on": {
+        "scheduled": [
+          {
+            "link_unit": "libc",
+            "module": "libio/genops.c",
+            "foundational": false,
+            "unique_edges": 1,
+            "total_edges": 1
+          }
+        ],
+        "cut": [],
+        "external": []
+      }
+    },
+    {
+      "link_unit": "libc",
+      "module": "libio/stdio.c",
+      "foundational": false,
+      "layer": 1,
+      "waves": [
+        4
+      ],
+      "depends_on": {
+        "scheduled": [
+          {
+            "link_unit": "libc",
+            "module": "libio/genops.c",
+            "foundational": false,
+            "unique_edges": 1,
+            "total_edges": 1
+          }
+        ],
+        "cut": [],
+        "external": []
+      }
+    }
+  ],
+  "waves": [
+    {
+      "index": 0,
+      "link_unit": "libc",
+      "module": "time/bits/types/struct_tm.h",
+      "foundational": false,
+      "layer": 0,
+      "sublayer": 0,
+      "status": "done",
+      "depends_on": {
+        "scheduled": [],
+        "cut": []
+      },
+      "items": [
+        {
+          "name": "tm",
+          "defined_in": "time/bits/types/struct_tm.h",
+          "kind": "struct",
+          "field_users": [
+            "tm_sec",
+            "tm_min",
+            "tm_hour",
+            "tm_mday",
+            "tm_mon",
+            "tm_year",
+            "tm_wday",
+            "tm_yday",
+            "tm_isdst",
+            "tm_gmtoff",
+            "tm_zone"
+          ],
+          "typedefs": [],
+          "home": "src/libc/time/bits/types/struct_tm_h.rs",
+          "objective": "wrap",
+          "opaque_after": null,
+          "memory_unmanaged_after": null,
+          "unreferenced_after": null
+        }
+      ],
+      "packed_with": null,
+      "batches": [
+        {
+          "index": 0,
+          "link_unit": "libc",
+          "module": "time/bits/types/struct_tm.h",
+          "foundational": false,
+          "kind": "wrap",
+          "status": "done",
+          "items": [
+            {
+              "name": "tm",
+              "defined_in": "time/bits/types/struct_tm.h",
+              "kind": "struct",
+              "field_users": [
+                "tm_sec",
+                "tm_min",
+                "tm_hour",
+                "tm_mday",
+                "tm_mon",
+                "tm_year",
+                "tm_wday",
+                "tm_yday",
+                "tm_isdst",
+                "tm_gmtoff",
+                "tm_zone"
+              ],
+              "typedefs": [],
+              "home": "src/libc/time/bits/types/struct_tm_h.rs"
+            }
+          ],
+          "commits": [
+            "b7d01b0",
+            "ea38101",
+            "8220840"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "link_unit": "libc",
+      "module": "csu/errno-loc.c",
+      "foundational": false,
+      "layer": 0,
+      "sublayer": 0,
+      "status": "done",
+      "depends_on": {
+        "scheduled": [],
+        "cut": []
+      },
+      "items": [
+        {
+          "name": "__errno_location",
+          "defined_in": "csu/errno-loc.c",
+          "kind": "function",
+          "field_users": [],
+          "typedefs": [],
+          "home": "src/libc/csu/errno_loc.rs",
+          "objective": "wrap",
+          "opaque_after": null,
+          "memory_unmanaged_after": null,
+          "unreferenced_after": null
+        }
+      ],
+      "packed_with": null,
+      "batches": [
+        {
+          "index": 0,
+          "link_unit": "libc",
+          "module": "csu/errno-loc.c",
+          "foundational": false,
+          "kind": "wrap",
+          "status": "done",
+          "items": [
+            {
+              "name": "__errno_location",
+              "defined_in": "csu/errno-loc.c",
+              "kind": "function",
+              "field_users": [],
+              "typedefs": [],
+              "home": "src/libc/csu/errno_loc.rs"
+            }
+          ],
+          "commits": [
+            "787a802"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "link_unit": "libc",
+      "module": "libio/genops.c",
+      "foundational": false,
+      "layer": 0,
+      "sublayer": 0,
+      "status": "todo",
+      "depends_on": {
+        "scheduled": [],
+        "cut": []
+      },
+      "items": [
+        {
+          "name": "_IO_FILE",
+          "defined_in": "libio/bits/types/struct_FILE.h",
+          "kind": "struct",
+          "field_users": [],
+          "typedefs": [
+            "FILE"
+          ],
+          "home": "src/libc/libio/genops.rs",
+          "objective": "wrap",
+          "opaque_after": null,
+          "memory_unmanaged_after": null,
+          "unreferenced_after": null
+        }
+      ],
+      "packed_with": null,
+      "batches": []
+    },
+    {
+      "index": 3,
+      "link_unit": "libc",
+      "module": "stdio-common/fprintf.c",
+      "foundational": false,
+      "layer": 1,
+      "sublayer": 0,
+      "status": "todo",
+      "depends_on": {
+        "scheduled": [
+          2
+        ],
+        "cut": []
+      },
+      "items": [
+        {
+          "name": "fprintf",
+          "defined_in": "stdio-common/fprintf.c",
+          "kind": "function",
+          "field_users": [],
+          "typedefs": [],
+          "home": "src/libc/stdio_common/fprintf.rs",
+          "objective": "wrap",
+          "opaque_after": null,
+          "memory_unmanaged_after": null,
+          "unreferenced_after": null
+        }
+      ],
+      "packed_with": null,
+      "batches": []
+    },
+    {
+      "index": 4,
+      "link_unit": "libc",
+      "module": "libio/stdio.c",
+      "foundational": false,
+      "layer": 1,
+      "sublayer": 0,
+      "status": "todo",
+      "depends_on": {
+        "scheduled": [
+          2
+        ],
+        "cut": []
+      },
+      "items": [
+        {
+          "name": "stderr",
+          "defined_in": "libio/stdio.c",
+          "kind": "global",
+          "field_users": [],
+          "typedefs": [],
+          "home": "src/libc/libio/stdio.rs",
+          "objective": "wrap",
+          "opaque_after": null,
+          "memory_unmanaged_after": null,
+          "unreferenced_after": null
+        }
+      ],
+      "packed_with": null,
+      "batches": []
+    }
+  ]
+}

@@ -109,14 +109,14 @@ batch run's dir.
 
 ## Planning
 
-`<provider>/<model>` via `<backend>`. One row per planner run, in order; its reports are
+`openrouter/anthropic/claude-opus-5.5` via `claude`. One row per planner run, in order; its reports are
 the corrections it made to what earlier runs committed.
 
 | run | modules changed | items moved | wavefront artifacts changed | reports | $ | tokens | wall |
 |---|---:|---:|---|---:|---|---|---|
-| 1 | `<n>` | `<n>` | `<files>` | `<n>` | `$<n>` | `<n>M` | `<n>m<n>s` |
+| 1 | `5` | `0` | none | `0` | `$<n>` | `<n>M` | `<n>m<n>s` |
 | 2 | `<n>` | `<n>` | `<files>` | `<n>` | `$<n>` | `<n>M` | `<n>m<n>s` |
-| **Σ** | **`<n>`** | **`<n>`** | | **`<n>`** | **`$<n>`** | **`<n>M`** | **`<n>m<n>s`** |
+| **Σ** | **`5`** | **`0`** | | **`0`** | **`$<n>`** | **`<n>M`** | **`<n>m<n>s`** |
 
 ## Side campaigns
 

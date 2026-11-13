@@ -1,0 +1,399 @@
+{
+  "version": "ef321e23c20eebc6d6fb4044425c00e6df27b05f",
+  "link_units": [
+    {
+      "index": 0,
+      "name": "libc",
+      "kind": "library",
+      "linkage": "shared",
+      "depends_on": [],
+      "rust_equivalent": {
+        "std": {
+          "library": [
+            "std::io",
+            "std::fs",
+            "std::process",
+            "std::thread",
+            "std::sync",
+            "std::time",
+            "std::env",
+            "alloc::alloc"
+          ],
+          "feature_parity": "partial",
+          "notes": "on Linux std is built over this libc and keeps its state in Rust: no C stdio stream, errno setter, broken-down time or locale is shared with the C that still uses them"
+        },
+        "crates": []
+      },
+      "modules": [
+        {
+          "index": 0,
+          "name": "time/bits/types/struct_tm.h",
+          "status": "frozen",
+          "foundational": false,
+          "depends_on": [],
+          "translation_unit": null,
+          "internal_headers": [],
+          "api_headers": [
+            {
+              "path": "time/bits/types/struct_tm.h",
+              "items": {
+                "included": [],
+                "excluded": []
+              }
+            }
+          ],
+          "tests": [],
+          "objective": {
+            "objective": "wrap",
+            "rust_equivalent": {
+              "std": null,
+              "crates": [
+                {
+                  "crate": "time",
+                  "feature_parity": "partial",
+                  "license": "MIT OR Apache-2.0",
+                  "notes": "OffsetDateTime holds the calendar fields, weekday, ordinal day and UTC offset (tm_gmtoff) in Rust's own layout: no C layout to hand strftime or mktime, no tm_isdst flag, no zone abbreviation (tm_zone) and no normalisation of out-of-range fields, which the parents' C relies on through mktime"
+                },
+                {
+                  "crate": "chrono",
+                  "feature_parity": "partial",
+                  "license": "MIT OR Apache-2.0",
+                  "notes": "DateTime<FixedOffset> with Datelike and Timelike covers the same fields as time's OffsetDateTime, with the same gaps: no C layout, tm_isdst, tm_zone or normalisation"
+                }
+              ]
+            }
+          },
+          "counters": {
+            "implementation": {
+              "files": 0,
+              "loc": 0,
+              "structs": 0,
+              "functions": 0,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            },
+            "api": {
+              "files": 1,
+              "loc": 14,
+              "structs": 1,
+              "opaque_structs": 0,
+              "functions": 0,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            }
+          }
+        },
+        {
+          "index": 1,
+          "name": "csu/errno-loc.c",
+          "status": "frozen",
+          "foundational": false,
+          "depends_on": [],
+          "translation_unit": {
+            "path": "csu/errno-loc.c",
+            "items": {
+              "included": [],
+              "excluded": []
+            }
+          },
+          "internal_headers": [],
+          "api_headers": [
+            {
+              "path": "stdlib/errno.h",
+              "items": {
+                "included": [
+                  "__errno_location",
+                  "errno"
+                ],
+                "excluded": []
+              }
+            }
+          ],
+          "tests": [],
+          "objective": {
+            "objective": "wrap",
+            "rust_equivalent": {
+              "std": {
+                "library": [
+                  "std::io::Error::last_os_error"
+                ],
+                "feature_parity": "partial",
+                "notes": "reads the calling thread's errno, as raw_os_error gives it, but cannot set it, which the parents' code does before a call whose failure only errno reports"
+              },
+              "crates": []
+            }
+          },
+          "counters": {
+            "implementation": {
+              "files": 1,
+              "loc": 6,
+              "structs": 0,
+              "functions": 1,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            },
+            "api": {
+              "files": 1,
+              "loc": 2,
+              "structs": 0,
+              "opaque_structs": 0,
+              "functions": 1,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            }
+          }
+        },
+        {
+          "index": 2,
+          "name": "libio/genops.c",
+          "status": "todo",
+          "foundational": false,
+          "depends_on": [],
+          "translation_unit": {
+            "path": "libio/genops.c",
+            "items": {
+              "included": [],
+              "excluded": []
+            }
+          },
+          "internal_headers": [],
+          "api_headers": [
+            {
+              "path": "libio/bits/types/struct_FILE.h",
+              "items": {
+                "included": [],
+                "excluded": [
+                  "_IO_codecvt",
+                  "_IO_wide_data"
+                ]
+              }
+            },
+            {
+              "path": "libio/bits/types/FILE.h",
+              "items": {
+                "included": [],
+                "excluded": []
+              }
+            },
+            {
+              "path": "libio/bits/types/__FILE.h",
+              "items": {
+                "included": [],
+                "excluded": []
+              }
+            },
+            {
+              "path": "libio/stdio.h",
+              "items": {
+                "included": [
+                  "__uflow",
+                  "__overflow"
+                ],
+                "excluded": []
+              }
+            }
+          ],
+          "tests": [],
+          "objective": {
+            "objective": "wrap",
+            "rust_equivalent": {
+              "std": {
+                "library": [
+                  "std::io::BufReader",
+                  "std::io::BufWriter",
+                  "std::io::Read",
+                  "std::io::Write"
+                ],
+                "feature_parity": "partial",
+                "notes": "buffered streams whose buffers Rust owns: a stream the remaining C reads or writes too cannot share them, and there are no markers, backup areas, pushback beyond BufRead's, or the list of open streams flushed at exit"
+              },
+              "crates": []
+            }
+          },
+          "counters": {
+            "implementation": {
+              "files": 1,
+              "loc": 836,
+              "structs": 0,
+              "functions": 58,
+              "global_variables": 5,
+              "unions": 0,
+              "function_pointers": 0
+            },
+            "api": {
+              "files": 4,
+              "loc": 53,
+              "structs": 1,
+              "opaque_structs": 1,
+              "functions": 2,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            }
+          }
+        },
+        {
+          "index": 3,
+          "name": "stdio-common/fprintf.c",
+          "status": "todo",
+          "foundational": false,
+          "depends_on": [
+            {
+              "link_unit": "libc",
+              "module": "libio/genops.c",
+              "foundational": false,
+              "outgoing_edges": 1,
+              "incoming_edges": 0,
+              "counters": {
+                "structs": 1,
+                "functions": 0,
+                "global_variables": 0,
+                "unions": 0,
+                "function_pointers": 0
+              }
+            }
+          ],
+          "translation_unit": {
+            "path": "stdio-common/fprintf.c",
+            "items": {
+              "included": [],
+              "excluded": []
+            }
+          },
+          "internal_headers": [],
+          "api_headers": [
+            {
+              "path": "libio/stdio.h",
+              "items": {
+                "included": [
+                  "fprintf"
+                ],
+                "excluded": []
+              }
+            }
+          ],
+          "tests": [],
+          "objective": {
+            "objective": "wrap",
+            "rust_equivalent": {
+              "std": {
+                "library": [
+                  "core::fmt",
+                  "std::io::Write::write_fmt"
+                ],
+                "feature_parity": "partial",
+                "notes": "Rust's format syntax rather than printf's conversions, written to an io::Write rather than into a C stream's buffer, so that output the remaining C writes to the same stream is ordered with it only by flushes"
+              },
+              "crates": []
+            }
+          },
+          "counters": {
+            "implementation": {
+              "files": 1,
+              "loc": 13,
+              "structs": 0,
+              "functions": 1,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            },
+            "api": {
+              "files": 1,
+              "loc": 2,
+              "structs": 0,
+              "opaque_structs": 0,
+              "functions": 1,
+              "global_variables": 0,
+              "unions": 0,
+              "function_pointers": 0
+            }
+          }
+        },
+        {
+          "index": 4,
+          "name": "libio/stdio.c",
+          "status": "todo",
+          "foundational": false,
+          "depends_on": [
+            {
+              "link_unit": "libc",
+              "module": "libio/genops.c",
+              "foundational": false,
+              "outgoing_edges": 3,
+              "incoming_edges": 0,
+              "counters": {
+                "structs": 1,
+                "functions": 0,
+                "global_variables": 0,
+                "unions": 0,
+                "function_pointers": 0
+              }
+            }
+          ],
+          "translation_unit": {
+            "path": "libio/stdio.c",
+            "items": {
+              "included": [],
+              "excluded": []
+            }
+          },
+          "internal_headers": [],
+          "api_headers": [
+            {
+              "path": "libio/stdio.h",
+              "items": {
+                "included": [
+                  "stdin",
+                  "stdout",
+                  "stderr"
+                ],
+                "excluded": []
+              }
+            }
+          ],
+          "tests": [],
+          "objective": {
+            "objective": "wrap",
+            "rust_equivalent": {
+              "std": {
+                "library": [
+                  "std::io::stdin",
+                  "std::io::stdout",
+                  "std::io::stderr"
+                ],
+                "feature_parity": "partial",
+                "notes": "handles over descriptors 0 to 2 with Rust's own buffering (stdout line-buffered, stderr unbuffered), not the C streams: what the remaining C writes to stdout through its FILE buffer is ordered with Rust's writes only by flushes, and a stream C reassigns or reopens is not followed"
+              },
+              "crates": []
+            }
+          },
+          "counters": {
+            "implementation": {
+              "files": 1,
+              "loc": 5,
+              "structs": 0,
+              "functions": 0,
+              "global_variables": 3,
+              "unions": 0,
+              "function_pointers": 0
+            },
+            "api": {
+              "files": 1,
+              "loc": 6,
+              "structs": 0,
+              "opaque_structs": 0,
+              "functions": 0,
+              "global_variables": 3,
+              "unions": 0,
+              "function_pointers": 0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
