@@ -1,0 +1,7 @@
+error[E0277]: the trait bound `glibc_bindings::libc::libio::genops::File: From<_IO_FILE>` is not satisfied
+ --> tests/ub_safe/compile_fail/genops_file_is_not_built_from_its_layout.rs
+  |
+  |     let _stream: File = ffi::_IO_FILE::default().into();
+  |                                                  ^^^^ the trait `From<_IO_FILE>` is not implemented for `glibc_bindings::libc::libio::genops::File`
+  |
+  = note: required for `_IO_FILE` to implement `Into<glibc_bindings::libc::libio::genops::File>`

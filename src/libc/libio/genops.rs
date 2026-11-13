@@ -41,8 +41,13 @@ mod ffi_import {
         ///
         /// A stream C hands Rust is borrowed with `FileRef::from_ptr`, whose contract
         /// reads, for a stream: the pointer is NULL or an open stream that stays open for
-        /// the handle's lifetime, `fclose` included, and whatever else writes it while the
-        /// handle lives does so under its lock, as glibc's own stdio routines do.
+        /// the handle's lifetime, `fclose` included, and every other access to it while
+        /// the handle lives, C's or Rust's, on any thread, holds its lock. glibc's stdio
+        /// routines take that lock themselves only while the stream's locking is internal,
+        /// its default. On a stream set to `FSETLOCKING_BYCALLER`, every routine skips it,
+        /// `fflush(NULL)` and `exit`'s flush of every open stream included, and the
+        /// `_unlocked` routines skip it on every stream: the C that uses them holds the
+        /// lock itself, with `flockfile`, or the stream is not borrowed while it runs.
         #[doc(alias = "_IO_FILE")]
         #[doc(alias = "FILE")]
         File,
@@ -52,10 +57,11 @@ mod ffi_import {
     );
 
     // SAFETY: a stream is tied to no thread: glibc opens, writes and closes it from any
-    // thread, its lock recording an owner only while a call holds it, and no `File` value
-    // or owner exists in Rust (the field is private and this region builds none), so the
-    // assertion covers only the exclusive handle, which reaches the stream as a
-    // `FileRef` does, through its locked operations.
+    // thread, its lock recording an owner only while a call holds it. No `File` value
+    // exists in Rust (the field is private and this region builds none), so a `File`
+    // crosses threads only behind a pointer: an ffibox owner or view over it, which
+    // inherits this assertion, and which a later region may add, its stream then closed
+    // or reached on whichever thread holds it; the handles assert their own below.
     unsafe impl Send for File {}
     // SAFETY: as for `Send for File`: the exclusive handle holds no lock and no state of
     // its own, only the pointer.
@@ -64,7 +70,8 @@ mod ffi_import {
     // stream's lock: `FileRef` reads no field, and every operation a region adds on it
     // holds the lock, taken with `flockfile`, which locks whatever the stream's locking
     // mode, for the whole of its access, so that two threads' operations exclude each
-    // other and C's locked stdio routines alike.
+    // other, and every other access, which `FileRef::from_ptr`'s contract for a stream
+    // makes hold the lock too.
     unsafe impl Sync for File {}
     // SAFETY: as for `Sync for File`: copies of a shared handle reach the stream only
     // through its locked operations.
@@ -75,6 +82,7 @@ mod ffi_import {
     unsafe impl Sync for FileMut<'_> {}
 
     #[cfg(test)]
+    #[expect(unsafe_code, reason = "borrows stand-in streams through the seams")]
     mod unit_priv {
         use core::ptr;
         use std::thread;

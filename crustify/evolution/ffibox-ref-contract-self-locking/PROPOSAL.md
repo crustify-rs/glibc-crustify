@@ -36,6 +36,22 @@ through `Self::Ref` takes too (an object that locks itself, whose shared handle 
 nothing without its lock)." The macro's comment says that `$rf` has no write operation of
 ffibox's.
 
+Added by the module pass, wave-2/batch-1/run-1 (2026-11-13): the shared seam's pointer
+needs the same exception. `CRefSeam::as_ptr` (`src/traits.rs:1038`, at `9c22a73`) is
+documented as a "Read-only pointer to the C object, for FFI calls taking `*const C`". The
+routines that the table puts on `FooRef` take a `foo *` and write the object under its
+lock: `fprintf(FILE *, …)` is one. `FileRef` is the only handle wave 3's `fprintf` binding
+can take, and it passes the stream as `stream.as_ptr().cast_mut()`. That pointer carries
+the write provenance of the one C handed to `from_ptr`, but the binding still writes through
+a pointer ffibox calls read-only. `as_ptr`'s documentation adds: "or for C routines that
+write the object under a lock they take themselves, which `Self::Ref`'s contract allows."
+The module pass judged `File`'s thread-safety claim against these documents
+(`crustify/reviews/modules/libc/libio/genops.c/wave-2/batch-1/contracts/ffi_import/file-ref-contract-trusts-glibc-locking/report.md`),
+and found the self-locking shape that `docs/ownership.md` gives sound for `FILE`, whose
+recursive lock rules out `CGuarded`. Both text changes widen what a producer may claim of a
+shared handle. A review should mark them as relaxing ffibox's stated contract to match its
+own table, rather than as a new permission.
+
 ## Validation
 
 A documentation change. No reproducer: no current consumer's soundness changes.

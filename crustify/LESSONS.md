@@ -23,7 +23,14 @@ own under `crustify/tmp/`:
   `llvm-cov` prints this tree's file names relative to `src/`, so the `TOTAL` line is read
   from `llvm-cov report` itself. The compile-fail suite fails in the marked copy, which
   only a nightly builds, and it covers nothing.
+- a wave's and a module's end gates: `testing-gates`' `end-gates`, with `--stages
+  plain,asan-ubsan,tsan,miri` and with `--runner` set to a script in `crustify/tmp/`. Given
+  `<variant> <cargo args>`, the script runs `cargo` with the flags above, adding
+  `--target-dir` under the worktree's `crustify/tmp/` so that every snapshot reuses one
+  build per variant. Miri takes `--stage-env miri:CRUSTIFY_BUILD_VARIANT=plain` and
+  `--stage-env miri:CARGO_TARGET_DIR=<worktree>/crustify/tmp/target-miri`.
 
 **Evidence.** wave-2/batch-0/run-1 (`libio/genops.c`) worked these out by hand.
+wave-2/batch-1/run-1, its module pass, wrote the `end-gates` runner by hand too.
 
 **Scope.** Every batch until the tree gets a variant script.

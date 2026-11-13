@@ -51,7 +51,7 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `349` non-test, `251` tests; **C LoC** — `<n>`
+- **Rust LoC** — `349` non-test, `257` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
@@ -141,9 +141,9 @@ sums them.
 | module | wave | batch | pass | types | fields | +LoC | cov (C/Rust) | $ | tokens | wall | $/type | $/field |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/libio/genops.c` | `2` | `0` | first | `1` | `0` | `+335/-0` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | — |
-| `<link-unit>/<module>` | `<n>` | `<n>` | review | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/libio/genops.c` | `2` | `1` | review | `1` | `0` | `+25/-7` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | — |
 | **Σ first** |  |  |  | **`1`** | **`0`** | **`+335/-0`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | — |
-| **Σ review** |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ review** |  |  |  | **`1`** | **`0`** | **`+25/-7`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | — |
 
 ### Batches — wrap: tests
 
@@ -152,9 +152,9 @@ sums them.
 | module | wave | batch | pass | +UB safe tests (+C/+Rust pp) | +UB unsafe tests (+C/+Rust pp) | +equiv tests (+C/+Rust pp) | +unit tests (+C/+Rust pp) |
 |---|---|---|---|---|---|---|---|
 | `libc/libio/genops.c` | `2` | `0` | first | `+3` (—/`+0.00` pp) | `+0` (—/`+0.00` pp) | `+0` (—/`+0.00` pp) | `+3` (—/`+0.00` pp) |
-| `<link-unit>/<module>` | `<n>` | `<n>` | review | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
+| `libc/libio/genops.c` | `2` | `1` | review | `+1` (—/`+0.00` pp) | `+0` (—/`+0.00` pp) | `+0` (—/`+0.00` pp) | `+0` (—/`+0.00` pp) |
 | **Σ first** |  |  |  | **`+3` (—/`+0.00` pp)** | **`+0` (—/`+0.00` pp)** | **`+0` (—/`+0.00` pp)** | **`+3` (—/`+0.00` pp)** |
-| **Σ review** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
+| **Σ review** |  |  |  | **`+1` (—/`+0.00` pp)** | **`+0` (—/`+0.00` pp)** | **`+0` (—/`+0.00` pp)** | **`+0` (—/`+0.00` pp)** |
 
 ### Batches — port
 
@@ -186,9 +186,9 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/libio/genops.c` | `2` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-3.18` pp | `+2` | `+6` | `+1` | `+1` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
+| `libc/libio/genops.c` | `2` | `1` | wrap | review | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `±0.00` pp | `±0` | `±0` | `±0` | `±0` | `±0` |
 | **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-3.18` pp** | **`+2`** | **`+6`** | **`+1`** | **`+1`** | **`±0`** |
-| **Σ review** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
+| **Σ review** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0.00` pp** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
 
 ### Batches — review: PoC + reports
 
@@ -196,8 +196,8 @@ Deterministic `ffimap`; no model.
 
 | module | wave | batch | +lifecycle | +unsafe | +UB safe | +UB unsafe | +equiv | +internal | +conventions | +misc | total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `<link-unit>/<module>` | `<n>` | `<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `<n>` |
-| **Σ** |  |  | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`<n>`** |
+| `libc/libio/genops.c` | `2` | `1` | `+0` | `+0` | `+0` | `+0` | `+0` | `+2` | `+1` | `+0` | `3` |
+| **Σ** |  |  | **`+0`** | **`+0`** | **`+0`** | **`+0`** | **`+0`** | **`+2`** | **`+1`** | **`+0`** | **`3`** |
 
 ## Symbols
 
@@ -344,3 +344,22 @@ counts nonblank, noncomment lines of `src/`, `tests/` and `libc-sys/` (its gener
 `bindings.rs` left out), split at `#[cfg(test)]` modules and `tests/`. The safety audit's
 `C by value` (+1) is `File`'s layout field, and its `Drop/Clone` (+1) the `Clone` that
 `FileRef` derives.
+
+### Wave 2's module pass: `File`'s thread-safety claim
+
+`libio/genops.c`'s only review, `wave-2/batch-1`, judged `File`'s `Send` and `Sync` sound.
+They are ffibox's shape for a C object that locks itself: every operation on `FileRef` holds
+`flockfile`, and `FileRef` touches nothing of the stream today. The review corrected two
+justifications. One was the contract for a borrowed stream, which claimed glibc's own stdio
+routines always hold the stream's lock: they skip it on a `FSETLOCKING_BYCALLER` stream.
+The other was `Send for File`'s, which misstated its scope. It also fixed one convention,
+an `unsafe_code` expectation on the unit tests, and added a compile-fail case: no `File`
+from a stream's layout. Its row's `+LoC` counts those `.rs` changes. Its reports sit in
+this table's columns as the dashboard has them: the two `contracts` findings of the
+`ffi_import` region under `+internal`, since the dashboard predates the template's
+`+contracts import` column. The dashboard also lacks the template's `Module passes` and
+`Batches: API stability` tables, which a batch does not add: the module pass fills its row
+in the Types tables, and its API measure (`ffimap api diff`) keeps both items. The Rust
+coverage was measured again, over `src/`, as the earlier batch measured it: `100.00`% (50
+of 50 lines), unchanged, since the landing changes no executable line. No safety-audit
+counter moved.
