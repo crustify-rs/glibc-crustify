@@ -224,7 +224,7 @@
       "foundational": false,
       "layer": 0,
       "sublayer": 0,
-      "status": "todo",
+      "status": "done",
       "depends_on": {
         "scheduled": [],
         "cut": []
@@ -246,7 +246,45 @@
         }
       ],
       "packed_with": null,
-      "batches": []
+      "batches": [
+        {
+          "index": 0,
+          "link_unit": "libc",
+          "module": "libio/genops.c",
+          "foundational": false,
+          "kind": "wrap",
+          "status": "done",
+          "items": [
+            {
+              "name": "_IO_FILE",
+              "defined_in": "libio/bits/types/struct_FILE.h",
+              "kind": "struct",
+              "field_users": [],
+              "typedefs": [
+                "FILE"
+              ],
+              "home": "src/libc/libio/genops.rs"
+            }
+          ],
+          "commits": [
+            "915f5a453089e2201a1d22eff1baac7c992e2bdb"
+          ]
+        },
+        {
+          "index": 1,
+          "link_unit": "libc",
+          "module": "libio/genops.c",
+          "foundational": false,
+          "kind": "review",
+          "status": "done",
+          "reviews": [],
+          "module_pass": true,
+          "commits": [
+            "b82a3e0d2f7a96a7a40ab9dda89f6110bcfce436",
+            "6e892eaf1a4452da68c8ab9c229c29607705931b"
+          ]
+        }
+      ]
     },
     {
       "index": 3,
