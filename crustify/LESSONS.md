@@ -82,3 +82,22 @@ SEGV in `flockfile` under ASan on `53dd776`. The unit test
 
 **Scope.** Every later operation on `FileRef` that locks the stream, `stderr`'s (wave 4)
 included, as long as `FileRef::from_ptr`'s contract admits every open stream.
+
+## A test of a failing stream reads what it holds only after its last write
+
+**Rule.** The stream fixture's `contents()` flushes the stream with `fflush` before it reads
+it. On a stream whose writes fail, `/dev/full` or full `fmemopen` storage, that flush fails
+too: it sets the stream's error indicator and discards its buffer. A test that reads
+`contents()` between two writes therefore changes what the second write meets, whether it
+fails and whether its failure shows in the indicator. Such a test reads `contents()` once,
+after its last write, as `tests/equiv_pub/iofwrite.rs`' `compare_flushing` does with
+`Flush::AtEnd`. A stream whose writes succeed may be read after each write.
+
+**Evidence.** wave-5/batch-0/run-1 (`libio/iofwrite.c`):
+`a_failed_line_buffered_flush_fails_as_fprintf_does`, read after each write, failed at its
+second write. The flush after `"status: "` had set the indicator, which hid the failure of
+the `"failed\n"` that followed. Read after the last write, it passes, and it fails when the
+binding ignores the indicator.
+
+**Scope.** Every test that writes a failing stream through the fixture, any later stream
+operation's, such as `fputs`' or `fflush`'s, included.

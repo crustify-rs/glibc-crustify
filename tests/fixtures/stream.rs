@@ -130,10 +130,35 @@ impl Stream {
         assert!(unsafe { ffi::fwide(self.file, 1) } > 0, "fwide failed");
     }
 
+    /// Makes the stream line-buffered, as `setvbuf(stream, NULL, _IOLBF, BUFSIZ)` does: its
+    /// buffer is flushed at each newline. Called before anything else touches the stream, as
+    /// `setvbuf` requires.
+    pub(crate) fn line_buffered(self) -> Self {
+        let mode = c_int::try_from(ffi::_IOLBF).unwrap();
+        // SAFETY: an open stream nothing has read or written yet; a NULL buffer, which lets
+        // glibc allocate its own, of the size given.
+        let r = unsafe { ffi::setvbuf(self.file, ptr::null_mut(), mode, 8192) };
+        assert_eq!(r, 0, "setvbuf failed");
+        self
+    }
+
     /// The stream's error indicator, as `ferror` reads it.
     pub(crate) fn has_error(&self) -> bool {
         // SAFETY: an open stream.
         unsafe { ffi::ferror(self.file) != 0 }
+    }
+
+    /// Clears the stream's error indicator, as `clearerr` does.
+    pub(crate) fn clear_error(&self) {
+        // SAFETY: an open stream.
+        unsafe { ffi::clearerr(self.file) };
+    }
+
+    /// The stream's orientation, as `fwide(stream, 0)` reads it: negative for bytes, positive
+    /// for wide characters, `0` for none yet.
+    pub(crate) fn orientation(&self) -> c_int {
+        // SAFETY: an open stream; a mode of `0` only reads the orientation.
+        unsafe { ffi::fwide(self.file, 0) }
     }
 
     /// Whether another thread may take the stream's lock now: `ftrylockfile` from a thread

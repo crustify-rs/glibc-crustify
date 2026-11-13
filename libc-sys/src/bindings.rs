@@ -11,6 +11,7 @@ pub const O_WRONLY: i32 = 1;
 pub const O_CREAT: i32 = 64;
 pub const O_EXCL: i32 = 128;
 pub const SIGABRT: i32 = 6;
+pub const _IOLBF: i32 = 1;
 unsafe extern "C" {
     pub fn __errno_location() -> *mut ::std::os::raw::c_int;
 }
@@ -198,11 +199,30 @@ unsafe extern "C" {
     ) -> *mut FILE;
 }
 unsafe extern "C" {
+    pub fn setvbuf(
+        __stream: *mut FILE,
+        __buf: *mut ::std::os::raw::c_char,
+        __modes: ::std::os::raw::c_int,
+        __n: usize,
+    ) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
     pub fn fprintf(
         __stream: *mut FILE,
         __format: *const ::std::os::raw::c_char,
         ...
     ) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn fwrite(
+        __ptr: *const ::std::os::raw::c_void,
+        __size: usize,
+        __n: usize,
+        __s: *mut FILE,
+    ) -> usize;
+}
+unsafe extern "C" {
+    pub fn clearerr(__stream: *mut FILE);
 }
 unsafe extern "C" {
     pub fn ferror(__stream: *mut FILE) -> ::std::os::raw::c_int;

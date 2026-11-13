@@ -1,0 +1,33 @@
+{
+  "objective": "wrap",
+  "wave": 5,
+  "batch": 0,
+  "link_unit": "libc",
+  "module": "libio/iofwrite.c",
+  "foundational": false,
+  "base_branch": "refs/heads/crustify/waves/wave-5",
+  "backend": "claude",
+  "billing": "api",
+  "model_proxy": "openrouter",
+  "args": [
+    "--model",
+    "claude-opus-5-5"
+  ],
+  "revisions": {
+    "crustify": "cc84106",
+    "wavefront": "bf21e16",
+    "ffimap": "9aa2ef1",
+    "ffibox": "9c22a73"
+  },
+  "items": [
+    {
+      "name": "fwrite",
+      "defined_in": "libio/iofwrite.c",
+      "kind": "function",
+      "field_users": [],
+      "typedefs": [],
+      "home": "src/libc/libio/iofwrite.rs"
+    }
+  ],
+  "session_id": "1dc6e066-3b67-4b35-92c1-e3bfaaff1fcb"
+}

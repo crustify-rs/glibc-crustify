@@ -16,6 +16,12 @@ type _IO_FILE|FILE
 function fprintf
 function flockfile|funlockfile
 
+# libio/iofwrite.c: the byte-exact write libgit2's cli/opt.c makes to a caller's stream through
+# its io::Write, which the binding makes as fwrite(bytes, 1, len, stream) inside flockfile and
+# funlockfile, reading the stream's error indicator with ferror (below) around it
+# (crustify-rs/libgit2-bindings).
+function fwrite
+
 # csu/errno-loc.c: the calling thread's errno, which libgit2's util/errors.c and its tests
 # read and write (crustify-rs/libgit2-bindings).
 function __errno_location
@@ -44,3 +50,7 @@ var FSETLOCKING_BYCALLER
 var EBADF|ENOSPC
 # libio/iofopen.c, libio/iofclose.c: the stdio.c tests also point `stderr` at a second open
 # stream, as a program redirecting it does, through the fopen and fclose above.
+# libio/iosetvbuf.c, libio/clearerr.c: the iofwrite.c tests make a stream line-buffered, the one
+# mode whose failed flush fwrite reports with a full count, and clear its error indicator.
+function setvbuf|clearerr
+var _IOLBF

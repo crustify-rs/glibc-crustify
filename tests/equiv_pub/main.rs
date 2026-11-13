@@ -8,4 +8,5 @@
 mod stream;
 
 mod fprintf;
+mod iofwrite;
 mod stdio;

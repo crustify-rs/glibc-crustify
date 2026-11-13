@@ -4,11 +4,18 @@
 //! close a stream are C's, and Rust holds a stream only through the [`FileRef`] that
 //! whatever keeps it open lends.
 
+pub(crate) use ffi_import::StreamLock;
 pub use ffi_import::{File, FileMut, FileRef};
 
-#[expect(unsafe_code, reason = "asserts the thread safety of glibc's streams")]
+#[expect(
+    unsafe_code,
+    reason = "asserts the thread safety of glibc's streams, and takes and releases their locks"
+)]
 mod ffi_import {
-    use ffibox::define_ctype;
+    use core::marker::PhantomData;
+    use std::io;
+
+    use ffibox::{CRefSeam, define_ctype};
 
     use crate::libc::ffi;
 
@@ -82,6 +89,79 @@ mod ffi_import {
     unsafe impl Sync for FileRef<'_> {}
     // SAFETY: `&FileMut` reaches the stream only through `as_ref`, a shared handle.
     unsafe impl Sync for FileMut<'_> {}
+
+    impl<'a> FileRef<'a> {
+        /// Takes the stream's lock with `flockfile`, for an operation bound on [`FileRef`] to
+        /// hold for the whole of its access to the stream, as `File`'s `Sync` requires: the
+        /// lock is taken whatever the stream's locking mode, waiting while another thread
+        /// holds it, and recursively when this thread does. It is released when the hold is
+        /// dropped, by the thread that took it.
+        ///
+        /// A stream that has no lock, as [`has_lock`](Self::has_lock) tells, is refused with
+        /// [`io::ErrorKind::Unsupported`], before anything of it but its `_lock` is read and
+        /// without touching `errno`: `flockfile` would dereference its NULL `_lock`.
+        pub(crate) fn lock(self) -> io::Result<StreamLock<'a>> {
+            if !self.has_lock() {
+                return Err(io::Error::new(
+                    io::ErrorKind::Unsupported,
+                    "the stream has no lock",
+                ));
+            }
+            // SAFETY: the stream is open for the handle's lifetime, which the hold does not
+            // outlast (`FileRef::from_ptr`'s contract for a stream), and it has a lock, checked
+            // just above: `flockfile` dereferences the stream's `_lock` unchecked. It takes that
+            // recursive lock with no other precondition, whatever the stream's locking mode.
+            // The pointer has the write provenance of the one C handed `FileRef::from_ptr`, and
+            // `flockfile` writes only the lock, which that contract allows (`File`'s `Sync`).
+            unsafe { ffi::flockfile(self.as_ptr().cast_mut()) };
+            Ok(StreamLock {
+                stream: self,
+                _thread: PhantomData,
+            })
+        }
+
+        /// Whether the stream has a lock for `flockfile` to take, which `flockfile` reaches
+        /// without checking: every stream C opens has one, and the stream glibc hands a
+        /// `register_printf_specifier` handler, over printf's own buffer, has none.
+        pub(crate) fn has_lock(self) -> bool {
+            let p = self.as_ptr();
+            // SAFETY: `p` is an open stream for the handle's lifetime (`FileRef::from_ptr`'s
+            // contract), valid and aligned for a read of its layout. The routine that opens a
+            // stream sets its `_lock` before handing it out, and nothing writes it while the
+            // stream is open, so this read, without the lock, races with no write: the stdio
+            // routines write only the stream's other fields, under its lock.
+            !unsafe { (*p)._lock }.is_null()
+        }
+    }
+
+    /// A hold of a stream's lock, which [`FileRef::lock`] takes with `flockfile`, released
+    /// with `funlockfile` when dropped, unwinding included. It is neither `Send` nor `Sync`:
+    /// the lock records the thread that took it, which alone may release it.
+    pub(crate) struct StreamLock<'a> {
+        /// The locked stream.
+        stream: FileRef<'a>,
+        /// Ties the hold to the thread that took the lock.
+        _thread: PhantomData<*const ()>,
+    }
+
+    impl StreamLock<'_> {
+        /// The locked stream's pointer, for the stdio calls its holder makes under the lock:
+        /// it has the write provenance of the one C handed `FileRef::from_ptr`, and a stdio
+        /// routine writes the stream under its lock, which that contract allows (`File`'s
+        /// `Sync`). The stream is open while the hold lives, and locked by this thread.
+        pub(crate) fn as_ptr(&self) -> *mut ffi::FILE {
+            self.stream.as_ptr().cast_mut()
+        }
+    }
+
+    impl Drop for StreamLock<'_> {
+        fn drop(&mut self) {
+            // SAFETY: this thread took the lock in `FileRef::lock`, the hold being neither
+            // `Send` nor `Sync`, on a stream that is still open, the hold not outliving its
+            // handle; and it is released once, here, as the hold is dropped once.
+            unsafe { ffi::funlockfile(self.as_ptr()) };
+        }
+    }
 
     #[cfg(test)]
     #[expect(unsafe_code, reason = "borrows stand-in streams through the seams")]

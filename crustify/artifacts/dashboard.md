@@ -51,23 +51,23 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `424` non-test, `923` tests; **C LoC** — `<n>`
+- **Rust LoC** — `506` non-test, `1484` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
 | | count | share | C LoC coverage | Rust LoC coverage |
 |---|---:|---:|---:|---:|
-| UB safe tests | `6` | — | — | `30.21`% |
-| UB unsafe tests | `2` | — | — | `7.41`% |
-| Equiv tests | `8` | — | — | `41.67`% |
-| Unit tests | `24` | — | — | `100.00`% |
-| **Total tests** | **`40`** | — | — | **`100.00`%** |
+| UB safe tests | `6` | — | — | `20.14`% |
+| UB unsafe tests | `2` | — | — | `2.78`% |
+| Equiv tests | `18` | — | — | `61.11`% |
+| Unit tests | `44` | — | — | `97.22`% |
+| **Total tests** | **`70`** | — | — | **`100.00`%** |
 | total types | `2` | — | — | — |
 | ported types | `0` | `0`% | — | — |
 | wrapped types | `2` | `100`% | — | — |
-| total symbols | `3` | — | — | — |
+| total symbols | `4` | — | — | — |
 | ported symbols | `0` | `0`% | — | — |
-| wrapped symbols | `2` | `67`% | — | — |
+| wrapped symbols | `3` | `75`% | — | — |
 
 ### Module stats
 
@@ -209,10 +209,11 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `1` | `821` | `+821/-1` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `libc/libio/stdio.c` | `4` | `0` | wrap | first | `1` | `172` | `+172/-0` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/libio/iofwrite.c` | `5` | `0` | wrap | first | `1` | `954` | `+954/-50` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `libc/stdio-common/fprintf.c` | `3` | `1` | wrap | review | `1` | `199` | `+199/-31` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `libc/libio/stdio.c` | `4` | `1` | wrap | review | `1` | `196` | `+196/-112` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
-| **Σ first** |  |  |  |  | **`2`** | **`993`** | **`+993/-1`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ first** |  |  |  |  | **`3`** | **`1947`** | **`+1947/-51`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 | **Σ review** |  |  |  |  | **`2`** | **`395`** | **`+395/-143`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 
 ### Batches: tests
@@ -223,9 +224,10 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | first | `+0` (—/`-24.28` pp) | `+0` (—/`+0.00` pp) | `+6` (—/`+39.53` pp) | `+16` (—/`+0.00` pp) |
 | `libc/libio/stdio.c` | `4` | `0` | first | `+2` (—/`+3.11` pp) | `+0` (—/`+0.00` pp) | `+1` (—/`+7.41` pp) | `+2` (—/`+0.00` pp) |
+| `libc/libio/iofwrite.c` | `5` | `0` | first | `+0` (—/`-8.86` pp) | `+0` (—/`-1.22` pp) | `+10` (—/`+17.11` pp) | `+20` (—/`+1.22` pp) |
 | `libc/stdio-common/fprintf.c` | `3` | `1` | review | `+0` (—/`-3.51` pp) | `+0` (—/`+0.00` pp) | `+0` (—/`+2.14` pp) | `+1` (—/`+0.00` pp) |
 | `libc/libio/stdio.c` | `4` | `1` | review | `-1` (—/`-7.41` pp) | `+2` (—/`+7.41` pp) | `+1` (—/`+0.00` pp) | `-2` (—/`-7.41` pp) |
-| **Σ first** |  |  |  | **`+2` (—/`-21.17` pp)** | **`+0` (—/`+0.00` pp)** | **`+7` (—/`+46.94` pp)** | **`+18` (—/`+0.00` pp)** |
+| **Σ first** |  |  |  | **`+2` (—/`-30.03` pp)** | **`+0` (—/`-1.22` pp)** | **`+17` (—/`+64.05` pp)** | **`+38` (—/`+1.22` pp)** |
 | **Σ review** |  |  |  | **`-1` (—/`-10.92` pp)** | **`+2` (—/`+7.41` pp)** | **`+1` (—/`+2.14` pp)** | **`-1` (—/`-7.41` pp)** |
 
 ### Batches: safety audit
@@ -236,10 +238,11 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-6.20` pp | `+3` | `±0` | `±0` | `±0` | `±0` |
 | `libc/libio/stdio.c` | `4` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-0.43` pp | `+2` | `±0` | `±0` | `±0` | `±0` |
+| `libc/libio/iofwrite.c` | `5` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-4.10` pp | `+3` | `±0` | `±0` | `+2` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
 | `libc/stdio-common/fprintf.c` | `3` | `1` | wrap | review | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-0.70` pp | `+1` | `±0` | `±0` | `±0` | `±0` |
 | `libc/libio/stdio.c` | `4` | `1` | wrap | review | `±0` | `±0` | `±0` | `+1` | `±0` | `±0` | `±0.00` pp | `±0` | `±0` | `±0` | `±0` | `±0` |
-| **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-6.63` pp** | **`+5`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
+| **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-10.73` pp** | **`+8`** | **`±0`** | **`±0`** | **`+2`** | **`±0`** |
 | **Σ review** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`+1`** | **`±0`** | **`±0`** | **`-0.70` pp** | **`+1`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
 
 ### Batches — review: PoC + reports
@@ -481,3 +484,57 @@ The merge keeps every row both modules added. The `Σ` rows of the Symbols table
 Overview's `Rust LoC` are ours plus theirs less the merge base's; the Coverage stats' counts
 are the merged suites', with `fprintf.c`'s percentages, the later landing's, and `stdio.c`'s
 for `ub_unsafe`, until a gate measures the merged tree.
+
+### Wave 5: `fwrite`, the byte-exact write
+
+`libio/iofwrite.c`'s wave 5 binds `fwrite` as `FileRef::write_all(&self, &[u8]) ->
+io::Result<()>`. It calls `fwrite(bytes, 1, len, stream)` between `flockfile` and
+`funlockfile`, so the bytes land in the stream's buffer as they are, NUL and invalid UTF-8
+included. It is the write the parent's `FileWriter` (`src/git2/src/cli/opt.rs`) makes, one
+call per `io::Write::write`, without the U+FFFD it substitutes today. The planner's "a short
+count on failure" became an error. A short count is how `fwrite` reports a failure, and after
+a failed flush the stream has discarded what its buffer held, so a caller that retries the
+rest, as `write_all` would, writes on as if nothing had failed. `Ok` is therefore always the
+whole slice, and `binding-symbols` leaves it out of the return. The count is lost on failure,
+as `print`'s is.
+
+`fwrite` returns its full count when the bytes fit a line-buffered stream's buffer, end
+with a newline, and the flush that newline calls for fails. `fprintf` fails there. The
+binding reads the stream's error indicator with `ferror` before and after the call, under
+the same hold of the lock, and reports that write as failed when the indicator goes from
+clear to set. An indicator already set by an earlier, uncleared failure hides that one
+case. The binding's doc says so, and a unit test keeps the behaviour. The parent's export
+differs from C's `fprintf` there alone. A wide-oriented stream gets `0` from `fwrite`, with
+neither `errno` nor the indicator set, so the binding reports `Other`, as `print` does. An
+empty slice succeeds without touching the stream, as `fwrite` of no bytes returns at once.
+`fprintf(stream, "%s", "")` orients the stream or fails, so the equivalence tests against
+`fprintf` write no empty text.
+
+The lock moved to `File`'s home. `FileRef::lock` (`genops.rs`, crate-private) checks
+`has_lock` and takes `flockfile`. The `StreamLock` hold it returns releases the lock with
+`funlockfile` when dropped, unwinding included, and is neither `Send` nor `Sync`. `print`
+now takes it too: `fprintf.rs` loses its own `has_lock`, `flockfile` and `funlockfile`, and
+its tests pass unchanged. With the lock routines made no-ops, both modules' threaded and
+lock-waiting tests fail.
+
+The row's `+LoC` and `loc` count the `.rs` diff: the regenerated raw bindings' 20 lines
+(`fwrite`, and `setvbuf`, `clearerr` and `_IOLBF`, test-only), the module, the lock's move and
+the tests. Tests: 10 `equiv_pub`, against the raw `fwrite` through the mapping the binding
+documents and against `fprintf(stream, "%s", text)`, on growing, file, line-buffered,
+by-caller-locked, read-only, full, failing and wide streams. Also 17 `unit_pub` and 3
+`unit_priv`. They run plain and under ASan (the workspace), the two stream suites under TSan,
+two named tests under BSan, and every new test alone under Miri. The 27 that call C stop at
+their first foreign call there and carry the mark. The fixture gains `line_buffered`,
+`clear_error` and `orientation`. Rust coverage is measured over `src/` as before, on the
+merged tree, which no gate had measured since `fprintf.c`'s integration: `100.00`% (144 of
+144 lines, 161 of 161 regions; `iofwrite.rs` 33 of 33), from `100.00`% (100 of 100). The
+suites' moves are their figures on the base and the tree, each against its own denominator.
+`Coverage stats` now holds this measurement for every suite. Unit is `unit_priv` and
+`unit_pub` together. Doctests and the compile-fail case, which fails in the marked copy,
+count in no row. The one `fwrite` path no test reaches is `_IO_vtable_offset`'s, which is
+nonzero only for streams of binaries linked against libio's old ABI. The safety audit's
+`unsafe blocks` (`+3`) are the two `ferror`s and the `fwrite`. `has_lock`, `flockfile` and
+`funlockfile` moved, uncounted. `Drop/Clone` (`+2`) is `StreamLock`'s `Drop` and the
+`Clone` the private `Call` derives. `ffimap api diff` finds `fn::fwrite` `new` and the other
+four C items and both unattributed modules `kept`. `Rust LoC` moved by one counter's delta
+over the base and the tree, `+82` non-test and `+561` test lines.
