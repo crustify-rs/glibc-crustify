@@ -293,7 +293,7 @@
       "foundational": false,
       "layer": 1,
       "sublayer": 0,
-      "status": "wip",
+      "status": "done",
       "depends_on": {
         "scheduled": [
           2
@@ -343,10 +343,13 @@
           "module": "stdio-common/fprintf.c",
           "foundational": false,
           "kind": "review",
-          "status": "wip",
+          "status": "done",
           "reviews": [],
           "module_pass": true,
-          "commits": []
+          "commits": [
+            "74951e1b5eeae723d16b920499a2aff4dec8b547",
+            "238650a7977e2c4d1ab0602e8dd4980969874320"
+          ]
         }
       ]
     },
