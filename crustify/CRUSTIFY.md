@@ -30,7 +30,9 @@ for campaign decisions that remain unresolved.
 
 4. **Which model and billing should do the translation work?**
    (`id: translate-agent`)
-   - Answer: `openrouter/anthropic/claude-opus-5.5, api`
+   - Answer: `claude, api, proxy: openrouter, args: --model claude-opus-5-5`, the parent
+     `libgit2-crustify`'s answer since 2026-11-13, in the current template's format:
+     `<claude | codex>, <subscription | api>[, proxy: openrouter][, args: ...]`
    - Format: `<provider/model, api | subscription>`, e.g.
      `openrouter/anthropic/claude-opus-5, api`. The provider is the first
      segment and selects both the billing rate table and the backend CLI.
@@ -44,7 +46,7 @@ for campaign decisions that remain unresolved.
 
 5. **Do you want agentic review after translated work lands? If so, which
    model and billing should perform each review?** (`id: review-agent`)
-   - Answer: `openrouter/anthropic/claude-opus-5.5, api`, after each wave
+   - Answer: `claude, api, proxy: openrouter, args: --model claude-opus-5-5`, after each wave
 
 6. **Should I run fully autonomously end to end?** (`id: autonomy`)
    - Answer: `no`
@@ -58,17 +60,17 @@ Unanswered optional questions use their defaults.
 7. **Which model and billing should plan the campaign, and how many planner runs
    should it make? Each run emits what the plan lacks and corrects what the runs
    before it committed.** (`id: plan-agent`)
-   - Answer: the translation model and billing, 2 runs.
+   - Answer: `claude, api, proxy: openrouter, args: --model claude-opus-5-5, runs: 1` for an
+     advance that names its entities; the parent's answer otherwise.
    - By default: the translation model and billing, 2 runs.
 
 8. **Should the campaign use the default batching and parallelism settings, or
    customize them?** (`id: workload`)
-   - Answer: `max-types: 2, max-syms: 25, max-loc: 500`, at least 20 fields per type
-     batch; parallelism: assistant's choice.
+   - Answer: `assistant's choice`, the parent's answer.
 
 9. **What batch caps should review agents use? We recommend the same caps as
    translation by default.** (`id: review-workload`)
-   - Answer: `as many as the reviewed wave requires`
+   - Answer: `assistant's choice`, the parent's answer.
 
 10. **Which objectives should review agents review for? By default, every one the
     reviewer offers.** (`id: review-objectives`)
@@ -79,6 +81,11 @@ Unanswered optional questions use their defaults.
     the toolchain supports.** (`id: sanitizers`)
     - Answer: `asan-ubsan, tsan, bsan`, instrumenting the Rust; the system's glibc they
       link is not instrumented. MSan is not built.
+    - From 2026-11-13, as in the parent: BSan runs over the whole workspace, and as a
+      regression gate, only once before each ship point; otherwise an agent may run it on
+      small things, the tests its own work adds or changes and a review's reproducer,
+      each test named and under a `timeout`. This departs from the `testing-gates`
+      skill's Regressions section.
     - Miri needs no build and is always on.
 
 12. **How should the target be configured: which of its build features should be
@@ -104,7 +111,7 @@ Answer these approval-gate questions only if question 6 is answered `no`.
     - Answer: `no`
 15. **Should I wait for your approval before starting the translation phase?**
     (`id: gates.translation`)
-    - Answer: `yes`
+    - Answer: `no`, the parent's answer
 16. **Should I wait for your approval between modules?** (`id: gates.module`)
     - Answer: `no`
 17. **Should I wait for your approval before starting review passes?** (`id: gates.review`)
