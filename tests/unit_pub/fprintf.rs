@@ -8,6 +8,7 @@ use glibc_bindings::libc::csu::errno_loc::{errno, set_errno};
 use glibc_bindings::libc::ffi;
 
 use crate::stream::Stream;
+use crate::stream_unit::in_printf_handler;
 
 #[test]
 #[cfg_attr(miri, ignore = "calls C")]
@@ -116,8 +117,7 @@ fn a_stream_not_open_for_writing_fails_with_ebadf() {
     assert_eq!(e.raw_os_error(), Some(ffi::EBADF));
     // `errno` keeps the error, as C's does.
     assert_eq!(errno(), ffi::EBADF);
-    // SAFETY: an open stream.
-    assert_ne!(unsafe { ffi::ferror(stream.as_ptr()) }, 0);
+    assert!(stream.has_error());
     assert!(stream.is_unlocked());
 }
 
@@ -181,8 +181,7 @@ fn print_waits_for_the_lock_on_a_stream_locked_by_its_caller() {
     let stream = Stream::memory();
     stream.lock_by_caller();
     let file = stream.handle();
-    // SAFETY: an open stream; this thread releases the lock below.
-    unsafe { ffi::flockfile(stream.as_ptr()) };
+    let hold = stream.hold_lock();
     let started = Barrier::new(2);
     thread::scope(|s| {
         let waiter = s.spawn(|| {
@@ -193,8 +192,7 @@ fn print_waits_for_the_lock_on_a_stream_locked_by_its_caller() {
         thread::sleep(Duration::from_millis(100));
         // The lock is recursive: this thread, which holds it, writes through it.
         file.print("first ").unwrap();
-        // SAFETY: this thread took the lock above.
-        unsafe { ffi::funlockfile(stream.as_ptr()) };
+        drop(hold);
         assert_eq!(waiter.join().unwrap(), 6);
     });
     assert_eq!(stream.contents(), b"first second");
@@ -236,4 +234,23 @@ fn writes_from_threads_never_interleave() {
         seen[t][i] = true;
     }
     assert!(seen.iter().flatten().all(|&s| s), "a line is missing");
+}
+
+#[test]
+#[cfg_attr(miri, ignore = "calls C")]
+fn a_stream_without_a_lock_is_refused() {
+    // The stream glibc hands a printf handler has no lock, which `flockfile` would
+    // dereference: `print` refuses it before any call, and leaves `errno` alone.
+    let (print, write, errno_after) = in_printf_handler(|file| {
+        set_errno(ffi::EINTR);
+        let print = file.print("from Rust").unwrap_err();
+        let write = write!(file, "{}", 1).unwrap_err();
+        (print, write, errno())
+    });
+    for e in [print, write] {
+        assert_eq!(e.kind(), io::ErrorKind::Unsupported);
+        assert_eq!(e.raw_os_error(), None);
+        assert_eq!(e.to_string(), "the stream has no lock");
+    }
+    assert_eq!(errno_after, ffi::EINTR);
 }

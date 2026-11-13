@@ -130,6 +130,12 @@ impl Stream {
         assert!(unsafe { ffi::fwide(self.file, 1) } > 0, "fwide failed");
     }
 
+    /// The stream's error indicator, as `ferror` reads it.
+    pub(crate) fn has_error(&self) -> bool {
+        // SAFETY: an open stream.
+        unsafe { ffi::ferror(self.file) != 0 }
+    }
+
     /// Whether another thread may take the stream's lock now: `ftrylockfile` from a thread
     /// of its own, released again at once.
     pub(crate) fn is_unlocked(&self) -> bool {

@@ -59,6 +59,14 @@ under ASan and TSan. A binding that read `errno` without clearing it would repor
 `EINTR` that those unit tests set before the call. No rerun of another item is needed. No
 other item of this campaign uses the `errno` convention yet.
 
+The module pass, `wave-3/batch-1/run-1`, ran the equivalence and unit suites again,
+plain and under ASan and TSan, and they pass. It re-read `vfprintf`'s orientation check and
+`fmemopen`'s write in glibc 2.39, and found the binding's handling correct on every path it
+reaches. `errno` is cleared before `flockfile`, which sets none. It is read under the lock,
+right after the call. It is restored on success and on a failure that left it at 0. The
+module pass added one refusal before the call, of a stream with no lock, which leaves
+`errno` untouched as the NUL refusal does.
+
 ## Review
 
 Not reviewed.

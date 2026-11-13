@@ -36,7 +36,7 @@ mod ffi_import {
         /// although glibc's own `fprintf` would skip the lock on it. So one call's text is
         /// never interleaved with another thread's write to the stream, and the call waits
         /// while another thread holds the lock. The calling thread may already hold it, as
-        /// the lock is recursive.
+        /// the lock is recursive. A stream that has no lock is refused, as below.
         ///
         /// The text lands in the stream's buffer, and reaches the file when the buffering mode
         /// the C gave the stream says, or at `fflush` or `fclose`.
@@ -45,6 +45,10 @@ mod ffi_import {
         ///
         /// - [`io::ErrorKind::InvalidInput`], when `text` holds a NUL byte, which a C string cannot
         ///   carry. Nothing is written, and `errno` is left as it was.
+        /// - [`io::ErrorKind::Unsupported`], when the stream has no lock for `flockfile` to take:
+        ///   the stream glibc hands the handler of a conversion that `register_printf_specifier`
+        ///   adds, over printf's own buffer, whose lock is NULL. Nothing is written, and `errno` is
+        ///   left as it was.
         /// - `errno`'s error, when `fprintf` fails and sets it: `EBADF` for a stream not open for
         ///   writing, which sets its error indicator and has nothing written to it; the error of
         ///   the write that flushes the buffer, such as `ENOSPC`, `EPIPE` or `EIO`, after part of
@@ -61,6 +65,12 @@ mod ffi_import {
         pub fn print(&self, text: &str) -> io::Result<usize> {
             let text =
                 CString::new(text).map_err(|e| io::Error::new(io::ErrorKind::InvalidInput, e))?;
+            if !self.has_lock() {
+                return Err(io::Error::new(
+                    io::ErrorKind::Unsupported,
+                    "the stream has no lock",
+                ));
+            }
             let saved = errno();
             // `fprintf` reports some failures without setting `errno`: cleared, so that what it
             // holds after the call is what the call set.
@@ -93,6 +103,19 @@ mod ffi_import {
                 .map_err(|fmt::Error| io::Error::other("formatter error"))?;
             self.print(&text)
         }
+
+        /// Whether the stream has a lock for `flockfile` to take, which `flockfile` reaches
+        /// without checking: every stream C opens has one, and the stream glibc hands a
+        /// `register_printf_specifier` handler, over printf's own buffer, has none.
+        fn has_lock(&self) -> bool {
+            let p = self.as_ptr();
+            // SAFETY: `p` is an open stream for the handle's lifetime (`FileRef::from_ptr`'s
+            // contract), valid and aligned for a read of its layout. The routine that opens a
+            // stream sets its `_lock` before handing it out, and nothing writes it while the
+            // stream is open, so this read, without the lock, races with no write: the stdio
+            // routines write only the stream's other fields, under its lock.
+            !unsafe { (*p)._lock }.is_null()
+        }
     }
 
     /// `fprintf`'s outcome: `ret`, its return, as a count, or, when negative, the failure that
@@ -108,16 +131,18 @@ mod ffi_import {
 
     /// Writes `text` to `stream` with `fprintf(stream, "%s", text)`, holding the stream's
     /// lock, taken with `flockfile`, from before the call to after `errno` is read. Returns
-    /// what `fprintf` returned, with the `errno` it left.
+    /// what `fprintf` returned, with the `errno` it left. `stream` has a lock, as
+    /// `FileRef::has_lock` checks.
     fn print_locked(stream: FileRef<'_>, text: &CStr) -> (c_int, c_int) {
         // The stream's pointer, with the write provenance of the one C handed
         // `FileRef::from_ptr`: `fprintf`, `flockfile` and `funlockfile` write the stream
         // under its lock, which `FileRef`'s contract allows (`File`'s `Sync`).
         let p = stream.as_ptr().cast_mut();
         // SAFETY: `p` is an open stream for the handle's lifetime, which the call does not
-        // outlast (`FileRef::from_ptr`'s contract for a stream). `flockfile` takes its
-        // recursive lock with no other precondition, waiting while another thread holds it,
-        // whatever the stream's locking mode.
+        // outlast (`FileRef::from_ptr`'s contract for a stream), and it has a lock, which
+        // `print` checked first (`has_lock`): `flockfile` dereferences the stream's `_lock`
+        // unchecked. It takes that recursive lock with no other precondition, waiting while
+        // another thread holds it, whatever the stream's locking mode.
         unsafe { ffi::flockfile(p) };
         // SAFETY: `p` is an open stream, locked by this thread, as above. The format is a
         // NUL-terminated `"%s"` literal, whose one conversion reads one `char *`: `text`, a

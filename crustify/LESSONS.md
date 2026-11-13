@@ -56,3 +56,24 @@ interleaved lines over `fopen` and a glibc abort over `open_memstream`.
 
 **Scope.** Every TSan run over tests that share a C stream between threads, `stderr`'s
 (wave 4) included.
+
+## An operation that takes a stream's lock refuses a stream without one
+
+**Rule.** An operation bound on `FileRef` that takes the stream's lock with `flockfile`, or
+tries it with `ftrylockfile`, first checks that the stream has a lock (`_lock` non-null), as
+`FileRef::print`'s `has_lock` does (`src/libc/stdio_common/fprintf.rs`). If it has none,
+the operation returns `io::ErrorKind::Unsupported`, writes nothing and leaves `errno` alone.
+glibc's lock routines dereference `_lock` without checking it. glibc's own stdio routines
+skip the lock on such a stream, and Rust cannot do the same without breaking `FileRef`'s
+`Sync`. Every stream a program opens has a lock, as do the standard streams. The stream
+glibc hands the handler of a `register_printf_specifier` conversion has none, and it
+honours `FileRef::from_ptr`'s contract.
+
+**Evidence.** wave-3/batch-1/run-1 (`stdio-common/fprintf.c`'s module pass): finding
+`contracts/ffi_import/print-locks-a-stream-without-a-lock`, whose reproducer dies with a
+SEGV in `flockfile` under ASan on `53dd776`. The unit test
+`a_stream_without_a_lock_is_refused` uses the `in_printf_handler` fixture
+(`tests/fixtures/stream_unit.rs`), which gives later operations that stream to test against.
+
+**Scope.** Every later operation on `FileRef` that locks the stream, `stderr`'s (wave 4)
+included, as long as `FileRef::from_ptr`'s contract admits every open stream.

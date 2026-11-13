@@ -1,0 +1,30 @@
+{
+  "paths": [
+    "src/libc/stdio_common/fprintf.rs",
+    "tests/equiv_pub/fprintf.rs",
+    "tests/unit_pub/fprintf.rs",
+    "tests/fixtures/stream.rs"
+  ],
+  "wave_gates": true,
+  "module_pass": true,
+  "wave": 3,
+  "batch": 1,
+  "link_unit": "libc",
+  "module": "stdio-common/fprintf.c",
+  "foundational": false,
+  "base_branch": "refs/heads/crustify/waves/wave-3",
+  "backend": "claude",
+  "billing": "api",
+  "model_proxy": "openrouter",
+  "args": [
+    "--model",
+    "claude-opus-5-5"
+  ],
+  "revisions": {
+    "crustify": "cc84106",
+    "wavefront": "bf21e16",
+    "ffimap": "9aa2ef1",
+    "ffibox": "9c22a73"
+  },
+  "session_id": "5a07cec2-347b-4d06-8840-6dafaf370d1a"
+}

@@ -18,8 +18,9 @@ mod ffi_import {
         /// Wraps `tdf::FILE`
         ///
         /// C's stream, `FILE`: a file, a buffer or a cookie behind glibc's stdio buffer,
-        /// which C's stdio routines read, write and close. Opaque: the safe API reads and
-        /// writes none of its fields.
+        /// which C's stdio routines read, write and close. Opaque: the safe API writes none
+        /// of its fields, and reads only whether it has a lock (`_lock`), which the routine
+        /// that opens a stream sets and nothing changes while it is open.
         ///
         /// Borrowed only. C allocates every stream (`fopen`, `fdopen`, `tmpfile`,
         /// `open_memstream` and their kin, or the static storage of `stdin`, `stdout` and
@@ -36,8 +37,9 @@ mod ffi_import {
         /// `flockfile` takes whatever the stream's locking. [`FileRef`] is `Send` and
         /// `Sync` on that lock: every operation bound on it holds the lock, taken with
         /// `flockfile`, for the whole of its access to the stream, and reads nothing of
-        /// the stream without it. No producer yields a [`FileMut`]: nothing holds a stream
-        /// exclusively.
+        /// the stream without it but whether it has a lock: a stream without one, the one
+        /// glibc hands a `register_printf_specifier` handler, is refused. No producer
+        /// yields a [`FileMut`]: nothing holds a stream exclusively.
         ///
         /// A stream C hands Rust is borrowed with `FileRef::from_ptr`, whose contract
         /// reads, for a stream: the pointer is NULL or an open stream that stays open for
@@ -67,11 +69,11 @@ mod ffi_import {
     // its own, only the pointer.
     unsafe impl Send for FileMut<'_> {}
     // SAFETY: nothing reachable through a shared handle touches the stream but under the
-    // stream's lock: `FileRef` reads no field, and every operation a region adds on it
-    // holds the lock, taken with `flockfile`, which locks whatever the stream's locking
-    // mode, for the whole of its access, so that two threads' operations exclude each
-    // other, and every other access, which `FileRef::from_ptr`'s contract for a stream
-    // makes hold the lock too.
+    // stream's lock: `FileRef` reads no field but `_lock`, which nothing writes while the
+    // stream is open, and every operation a region adds on it holds the lock, taken with
+    // `flockfile`, which locks whatever the stream's locking mode, for the whole of its
+    // access, so that two threads' operations exclude each other, and every other access,
+    // which `FileRef::from_ptr`'s contract for a stream makes hold the lock too.
     unsafe impl Sync for File {}
     // SAFETY: as for `Sync for File`: copies of a shared handle reach the stream only
     // through its locked operations.

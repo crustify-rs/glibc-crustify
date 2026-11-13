@@ -22,12 +22,6 @@ fn c_print(stream: &Stream, text: &CStr) -> (c_int, c_int) {
     (ret, errno())
 }
 
-/// The stream's error indicator, as `ferror` reads it.
-fn has_error(stream: &Stream) -> bool {
-    // SAFETY: an open stream.
-    unsafe { ffi::ferror(stream.as_ptr()) != 0 }
-}
-
 /// Writes `texts` to `rust` through the binding and to `c` through C, comparing after each.
 fn compare(rust: &Stream, c: &Stream, texts: &[&str]) {
     for (step, text) in texts.iter().enumerate() {
@@ -49,8 +43,8 @@ fn compare(rust: &Stream, c: &Stream, texts: &[&str]) {
             }
         }
         assert_eq!(
-            has_error(rust),
-            has_error(c),
+            rust.has_error(),
+            c.has_error(),
             "step {step}: error indicator"
         );
         assert!(

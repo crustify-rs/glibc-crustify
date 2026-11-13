@@ -51,17 +51,17 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `399` non-test, `719` tests; **C LoC** — `<n>`
+- **Rust LoC** — `409` non-test, `809` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
 | | count | share | C LoC coverage | Rust LoC coverage |
 |---|---:|---:|---:|---:|
-| UB safe tests | `6` | — | — | `33.72`% |
+| UB safe tests | `6` | — | — | `30.21`% |
 | UB unsafe tests | `0` | — | — | — |
-| Equiv tests | `6` | — | — | `39.53`% |
-| Unit tests | `23` | — | — | `100.00`% |
-| **Total tests** | **`35`** | — | — | **`100.00`%** |
+| Equiv tests | `6` | — | — | `41.67`% |
+| Unit tests | `24` | — | — | `100.00`% |
+| **Total tests** | **`36`** | — | — | **`100.00`%** |
 | total types | `2` | — | — | — |
 | ported types | `0` | `0`% | — | — |
 | wrapped types | `2` | `100`% | — | — |
@@ -209,9 +209,9 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `1` | `821` | `+821/-1` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/stdio-common/fprintf.c` | `3` | `1` | wrap | review | `1` | `199` | `+199/-31` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | **Σ first** |  |  |  |  | **`1`** | **`821`** | **`+821/-1`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
-| **Σ review** |  |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ review** |  |  |  |  | **`1`** | **`199`** | **`+199/-31`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 
 ### Batches: tests
 
@@ -220,9 +220,9 @@ Deterministic `ffimap`; no model.
 | module | wave | batch | pass | +UB safe tests (+C/+Rust pp) | +UB unsafe tests (+C/+Rust pp) | +equiv tests (+C/+Rust pp) | +unit tests (+C/+Rust pp) |
 |---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | first | `+0` (—/`-24.28` pp) | `+0` (—/`+0.00` pp) | `+6` (—/`+39.53` pp) | `+16` (—/`+0.00` pp) |
-| `<link-unit>/<module>` | `<n>` | `<n>` | review | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
+| `libc/stdio-common/fprintf.c` | `3` | `1` | review | `+0` (—/`-3.51` pp) | `+0` (—/`+0.00` pp) | `+0` (—/`+2.14` pp) | `+1` (—/`+0.00` pp) |
 | **Σ first** |  |  |  | **`+0` (—/`-24.28` pp)** | **`+0` (—/`+0.00` pp)** | **`+6` (—/`+39.53` pp)** | **`+16` (—/`+0.00` pp)** |
-| **Σ review** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
+| **Σ review** |  |  |  | **`+0` (—/`-3.51` pp)** | **`+0` (—/`+0.00` pp)** | **`+0` (—/`+2.14` pp)** | **`+1` (—/`+0.00` pp)** |
 
 ### Batches: safety audit
 
@@ -232,9 +232,9 @@ Deterministic `ffimap`; no model.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-6.20` pp | `+3` | `±0` | `±0` | `±0` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
+| `libc/stdio-common/fprintf.c` | `3` | `1` | wrap | review | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-0.70` pp | `+1` | `±0` | `±0` | `±0` | `±0` |
 | **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-6.20` pp** | **`+3`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
-| **Σ review** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
+| **Σ review** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-0.70` pp** | **`+1`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
 
 ### Batches — review: PoC + reports
 
@@ -242,8 +242,8 @@ Deterministic `ffimap`; no model.
 
 | module | wave | batch | +lifecycle | +unsafe | +UB safe | +UB unsafe | +equiv | +internal | +conventions | +misc | total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `<link-unit>/<module>` | `<n>` | `<n>` | — | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `+<n>` | `<n>` |
-| **Σ** |  |  | — | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`+<n>`** | **`<n>`** |
+| `libc/stdio-common/fprintf.c` | `3` | `1` | — | `+0` | `+0` | `+0` | `+0` | `+1` | `+1` | `+0` | `2` |
+| **Σ** |  |  | — | **`+0`** | **`+0`** | **`+0`** | **`+0`** | **`+1`** | **`+1`** | **`+0`** | **`2`** |
 
 ## Notes
 
@@ -395,3 +395,35 @@ instrumented, so no branch figure exists. `EOVERFLOW`, for a text over `INT_MAX`
 one C outcome no test reaches, as it needs more than 4 GiB. The safety audit's `unsafe loc %`
 (`-6.20` pp) and `unsafe blocks` (`+3`) are the region's three calls. No public `unsafe fn` and
 no raw pointer reaches the safe interface.
+
+### Wave 3's module pass: a stream with no lock
+
+`stdio-common/fprintf.c`'s only review, `wave-3/batch-1`, judged `FileRef::print` sound on
+the points its task named. The lock is released on every path: nothing between `flockfile`
+and `funlockfile` can unwind, short of a thread cancellation inside `fprintf`'s write, a
+forced unwind Rust does not permit through a frame that owns a `CString`. `errno` is right
+on every path the binding reaches, as the `errno-failure-without-errno` proposal now
+records. The NUL refusal is the one `binding-symbols` asks of a string. `write_fmt`
+correctly carries no anchor, since `conventions` repeats one only for ownership variants
+and accessors.
+
+The review found one stream the binding could not take. glibc hands the handler of a
+`register_printf_specifier` conversion a stream with a NULL lock, and `flockfile`
+dereferences it. The binding now refuses such a stream with `io::ErrorKind::Unsupported`.
+That finding is a `contracts` one of the `ffi_import` region, under `+internal`, as wave
+2's were. The other finding is a `conventions` one: two `unit_pub` tests called the C
+outside the fixture.
+
+The row's `+LoC` and `loc` count the `.rs` changes of `src/` and `tests/`. The
+reproducer's 71 lines, under `crustify/reviews/`, are not part of the crate and are left
+out. The one test added is a unit test, through a new `unit_pub`-only fixture,
+`tests/fixtures/stream_unit.rs`. Rust line coverage stays at `100.00`% (96 of 96 lines, 109
+of 109 regions; `fprintf.rs` 46 of 46), measured as wave 2's was. llvm-cov counts std's
+`thread_local` code, which the fixture instantiates, under the toolchain's sources, and the
+measure leaves it out. The `UB safe` (`-3.51` pp) and `equiv` (`+2.14` pp) moves come
+from the new lines alone: the equivalence suite reaches `has_lock` on every stream. The
+`Rust LoC` line moved by the delta of one counter run over the base and the landed tree,
+`+10` non-test and `+90` test lines. That counter does not reproduce the earlier absolute
+figures exactly. The safety audit's `+1` unsafe block is `has_lock`'s read of `_lock`.
+`ffimap api diff` keeps `fn::fprintf` (`kept`) and both unattributed modules.
+
