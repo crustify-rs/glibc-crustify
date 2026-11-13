@@ -1,0 +1,15 @@
+[package]
+name = "stderr-lends-a-static-stream-the-program-may-close"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+ffibox = { git = "https://github.com/crustify-rs/ffibox", rev = "40621a29bffaede7a212c67eeadf803df6f1be29" }
+glibc-bindings = { path = "../../../../../../../../../../../.." }
+
+[workspace]
+
+# As the affected workspace does: ffibox resolves to the local checkout the campaign runs against.
+[patch."https://github.com/crustify-rs/ffibox"]
+ffibox = { path = "/opt/venv/share/ffibox" }

@@ -51,17 +51,17 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `409` non-test, `809` tests; **C LoC** — `<n>`
+- **Rust LoC** — `424` non-test, `923` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
 | | count | share | C LoC coverage | Rust LoC coverage |
 |---|---:|---:|---:|---:|
 | UB safe tests | `6` | — | — | `30.21`% |
-| UB unsafe tests | `0` | — | — | — |
-| Equiv tests | `6` | — | — | `41.67`% |
+| UB unsafe tests | `2` | — | — | `7.41`% |
+| Equiv tests | `8` | — | — | `41.67`% |
 | Unit tests | `24` | — | — | `100.00`% |
-| **Total tests** | **`36`** | — | — | **`100.00`%** |
+| **Total tests** | **`40`** | — | — | **`100.00`%** |
 | total types | `2` | — | — | — |
 | ported types | `0` | `0`% | — | — |
 | wrapped types | `2` | `100`% | — | — |
@@ -208,10 +208,12 @@ Deterministic `ffimap`; no model.
 | module | wave | batch | objective | pass | symbols | loc | +LoC | cov (C/Rust) | $ | tokens | wall | $/symbol | $/loc |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `1` | `821` | `+821/-1` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/libio/stdio.c` | `4` | `0` | wrap | first | `1` | `172` | `+172/-0` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `libc/stdio-common/fprintf.c` | `3` | `1` | wrap | review | `1` | `199` | `+199/-31` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
-| **Σ first** |  |  |  |  | **`1`** | **`821`** | **`+821/-1`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
-| **Σ review** |  |  |  |  | **`1`** | **`199`** | **`+199/-31`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| `libc/libio/stdio.c` | `4` | `1` | wrap | review | `1` | `196` | `+196/-112` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| **Σ first** |  |  |  |  | **`2`** | **`993`** | **`+993/-1`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ review** |  |  |  |  | **`2`** | **`395`** | **`+395/-143`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 
 ### Batches: tests
 
@@ -220,9 +222,11 @@ Deterministic `ffimap`; no model.
 | module | wave | batch | pass | +UB safe tests (+C/+Rust pp) | +UB unsafe tests (+C/+Rust pp) | +equiv tests (+C/+Rust pp) | +unit tests (+C/+Rust pp) |
 |---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | first | `+0` (—/`-24.28` pp) | `+0` (—/`+0.00` pp) | `+6` (—/`+39.53` pp) | `+16` (—/`+0.00` pp) |
+| `libc/libio/stdio.c` | `4` | `0` | first | `+2` (—/`+3.11` pp) | `+0` (—/`+0.00` pp) | `+1` (—/`+7.41` pp) | `+2` (—/`+0.00` pp) |
 | `libc/stdio-common/fprintf.c` | `3` | `1` | review | `+0` (—/`-3.51` pp) | `+0` (—/`+0.00` pp) | `+0` (—/`+2.14` pp) | `+1` (—/`+0.00` pp) |
-| **Σ first** |  |  |  | **`+0` (—/`-24.28` pp)** | **`+0` (—/`+0.00` pp)** | **`+6` (—/`+39.53` pp)** | **`+16` (—/`+0.00` pp)** |
-| **Σ review** |  |  |  | **`+0` (—/`-3.51` pp)** | **`+0` (—/`+0.00` pp)** | **`+0` (—/`+2.14` pp)** | **`+1` (—/`+0.00` pp)** |
+| `libc/libio/stdio.c` | `4` | `1` | review | `-1` (—/`-7.41` pp) | `+2` (—/`+7.41` pp) | `+1` (—/`+0.00` pp) | `-2` (—/`-7.41` pp) |
+| **Σ first** |  |  |  | **`+2` (—/`-21.17` pp)** | **`+0` (—/`+0.00` pp)** | **`+7` (—/`+46.94` pp)** | **`+18` (—/`+0.00` pp)** |
+| **Σ review** |  |  |  | **`-1` (—/`-10.92` pp)** | **`+2` (—/`+7.41` pp)** | **`+1` (—/`+2.14` pp)** | **`-1` (—/`-7.41` pp)** |
 
 ### Batches: safety audit
 
@@ -231,10 +235,12 @@ Deterministic `ffimap`; no model.
 | module | wave | batch | objective | pass | pub raw ptr (safe) | pub raw ptr | pub void ptr | pub unsafe fn | C borrow | slice borrow | unsafe loc % | unsafe blocks | Send/Sync | C by value | Drop/Clone | deref outside impl |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-6.20` pp | `+3` | `±0` | `±0` | `±0` | `±0` |
+| `libc/libio/stdio.c` | `4` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-0.43` pp | `+2` | `±0` | `±0` | `±0` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
 | `libc/stdio-common/fprintf.c` | `3` | `1` | wrap | review | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-0.70` pp | `+1` | `±0` | `±0` | `±0` | `±0` |
-| **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-6.20` pp** | **`+3`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
-| **Σ review** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-0.70` pp** | **`+1`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
+| `libc/libio/stdio.c` | `4` | `1` | wrap | review | `±0` | `±0` | `±0` | `+1` | `±0` | `±0` | `±0.00` pp | `±0` | `±0` | `±0` | `±0` | `±0` |
+| **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-6.63` pp** | **`+5`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
+| **Σ review** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`+1`** | **`±0`** | **`±0`** | **`-0.70` pp** | **`+1`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
 
 ### Batches — review: PoC + reports
 
@@ -243,7 +249,8 @@ Deterministic `ffimap`; no model.
 | module | wave | batch | +lifecycle | +unsafe | +UB safe | +UB unsafe | +equiv | +internal | +conventions | +misc | total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `libc/stdio-common/fprintf.c` | `3` | `1` | — | `+0` | `+0` | `+0` | `+0` | `+1` | `+1` | `+0` | `2` |
-| **Σ** |  |  | — | **`+0`** | **`+0`** | **`+0`** | **`+0`** | **`+1`** | **`+1`** | **`+0`** | **`2`** |
+| `libc/libio/stdio.c` | `4` | `1` | — | `+0` | `+0` | `+0` | `+0` | `+1` | `+0` | `+0` | `1` |
+| **Σ** |  |  | — | **`+0`** | **`+0`** | **`+0`** | **`+0`** | **`+2`** | **`+1`** | **`+0`** | **`3`** |
 
 ## Notes
 
@@ -427,3 +434,50 @@ from the new lines alone: the equivalence suite reaches `has_lock` on every stre
 figures exactly. The safety audit's `+1` unsafe block is `has_lock`'s read of `_lock`.
 `ffimap api diff` keeps `fn::fprintf` (`kept`) and both unattributed modules.
 
+
+### Wave 4: `stderr`, the first symbol
+
+`libio/stdio.c`'s wave 4 binds the global `stderr` as `stderr() -> FileRef<'static>`, which
+reads C's `stderr` on every call, as C's expression does, and borrows the stream it names
+for the rest of the program. Its doc states what the `'static` borrow assumes: no write to
+`stderr` while another thread may read it, no `fclose` or failing `freopen` of the stream,
+and the stream's internal locking left alone. No C of glibc's library or of either parent
+breaks these. The raw bindings gain `var stderr`, and the row's `+LoC` counts their 3 lines
+with the safe module and the tests. The anchor ``/// Wraps `glb::stderr` `` carries no
+`#[doc(alias)]`, because rustc rejects an alias equal to the item's name; proposal
+`doc-alias-equal-to-name` covers this. Its tests are 2 `ub_safe`, 2 `unit_pub` and 1
+`equiv_pub`, the first `equiv_pub` suite. All of them read the C global, so they carry Miri's
+ignore mark. The Rust figures were measured as before, over `src/`, now 54 lines, all
+covered. A suite's figure is the share of those 54 lines that suite covers alone. The
+safety audit's `unsafe blocks` (+2) are the global's read and the stream's borrow, both in
+`ffi_import`. No other metric moved. The API measure, `ffimap api diff`, finds
+`glb::stderr` `new` and the other modules `kept`.
+
+### Wave 4's module pass: `stderr` becomes an unsafe accessor
+
+`libio/stdio.c`'s only review, `wave-4/batch-1`, found the safe `stderr() ->
+FileRef<'static>` unsound. glibc's `stderr` is a variable its manual lets a program set,
+and its example closes a standard stream and points the variable at one `fopen` opened.
+`fclose` frees such a stream, so a kept `'static` handle outlives it. The reproducer shows
+a heap-use-after-free under ASan from the safe call. The finding is a `contracts` one of the
+`ffi_import` region, filed under `+internal` as wave 2's are. The fix makes `stderr` `unsafe
+fn stderr<'a>() -> FileRef<'a>`, its `# Safety` section moving onto the caller what the
+safe function assumed of the program. `ffimap api diff` classifies `glb::stderr`
+`changed`, kept for soundness. `st::_IO_FILE` and `tdf::FILE` are `kept`. The safety audit's
+`pub unsafe fn` (+1) is that accessor. No other metric moved. The tests moved with the API:
+the two `ub_safe` tests went to a new `ub_unsafe` suite, and the two `unit_pub` tests and
+their suite were removed, since `unit_pub` forbids `unsafe_code` and `equiv_pub` asserts the
+same against C. `equiv_pub` gained a test that C's reassignment of `stderr` is followed, for
+which the raw bindings gain `fopen` and `fclose`, test-only. A compile-fail case keeps the
+safe call rejected. Hence the tests row's negative cells: each suite's count and Rust
+figure are as measured over `src/` (54 lines) before and after. `stdio.rs`'s 4 lines moved
+from the `ub_safe` and `unit_pub` runs to `ub_unsafe`'s, and the joint figure stays
+`100.00`%. The row's `+LoC` counts the Rust tree's `.rs` changes, the regenerated
+bindings' 9 lines included. The reproducer's 78 lines, in the reviews dir, are left out.
+
+### Integration of `stdio-common/fprintf.c` after `libio/stdio.c`
+
+The merge keeps every row both modules added. The `Σ` rows of the Symbols tables and the
+Overview's `Rust LoC` are ours plus theirs less the merge base's; the Coverage stats' counts
+are the merged suites', with `fprintf.c`'s percentages, the later landing's, and `stdio.c`'s
+for `ub_unsafe`, until a gate measures the merged tree.

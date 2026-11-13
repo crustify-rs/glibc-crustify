@@ -170,6 +170,9 @@ impl Default for _IO_FILE {
     }
 }
 unsafe extern "C" {
+    pub static mut stderr: *mut FILE;
+}
+unsafe extern "C" {
     pub fn fclose(__stream: *mut FILE) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {

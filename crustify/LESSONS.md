@@ -15,11 +15,12 @@ own under `crustify/tmp/`:
 - format: `cargo +<the workspace's nightly> fmt --all -- --check`, since `rustfmt.toml`
   uses nightly-only options;
 - ASan: on that nightly, `--target x86_64-unknown-linux-gnu`, with
-  `RUSTFLAGS="-Zsanitizer=address -Cforce-frame-pointers=yes"`, and `RUSTDOCFLAGS` the
-  same for the doctests, run with `--doc` on their own, which otherwise fail to link
-  (`undefined symbol: __asan_init`); TSan: the same with `-Zsanitizer=thread` and
-  `-Zbuild-std`. They instrument the Rust alone, since the
-  system's glibc is not instrumented, so TSan sees no race inside glibc;
+  `RUSTFLAGS="-Zsanitizer=address -Cforce-frame-pointers=yes"`, and the same flags in
+  `RUSTDOCFLAGS`, without which the doctests fail to link against the ASan runtime; TSan:
+  the same with `-Zsanitizer=thread` and `-Zbuild-std`. They instrument the Rust alone,
+  since the system's glibc is not instrumented, so TSan sees no race inside glibc. The host
+  has no `llvm-symbolizer` on its `PATH`, so a sanitizer trace a report carries is
+  symbolized with `ASAN_OPTIONS=external_symbolizer_path=/usr/bin/addr2line`;
 - coverage: Rust only, measured as the parent's `crustify/scripts/coverage/baseline.sh`
   does, over a scratch copy without `c/`. Its `report.py` rejects the scope, since
   `llvm-cov` prints this tree's file names relative to `src/`, so the `TOTAL` line is read
@@ -36,6 +37,10 @@ own under `crustify/tmp/`:
 wave-2/batch-1/run-1, its module pass, wrote the `end-gates` runner by hand too.
 wave-3/batch-0/run-1 (`stdio-common/fprintf.c`) found that the `struct_tm_h` doctest fails to
 link under ASan without `RUSTDOCFLAGS`, and passes with it.
+wave-4/batch-0/run-1 (`libio/stdio.c`) found the doctests failing to link under ASan with
+`RUSTFLAGS` alone (`undefined symbol: __asan_init`), and passing with `RUSTDOCFLAGS`.
+wave-4/batch-1/run-1, its module pass, found its reproducer's ASan trace printed as bare
+addresses, and symbolized through `addr2line`.
 
 **Scope.** Every batch until the tree gets a variant script.
 
