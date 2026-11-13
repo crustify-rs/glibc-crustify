@@ -1,0 +1,1 @@
+//! `libio/iofwrite.c`: `fwrite`.

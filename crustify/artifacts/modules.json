@@ -396,7 +396,7 @@
         {
           "index": 5,
           "name": "libio/iofwrite.c",
-          "status": "todo",
+          "status": "frozen",
           "foundational": false,
           "depends_on": [
             {

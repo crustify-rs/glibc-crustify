@@ -95,6 +95,16 @@ Unanswered optional questions use their defaults.
       and the raw bindings are generated from the host's headers.
     - By default: the target's default configuration, with deprecated features disabled.
 
+## Evolution and shipping
+
+- **How far may the campaign evolve Crustify and its tools?** (`id: evolution`)
+  - Answer: `evolve`, on the parent's working branches (`libgit2-crustify/devel` of each
+    component), the parent `libgit2-crustify`'s answer: a side campaign's settings are its
+    parent's.
+- **At which points should the wrapper ship?** (`id: ship`)
+  - Answer: with the parent: the wrapper ships the commit the parent pins when the parent
+    ships, each with the user's approval.
+
 ## Commits
 
 13. **Which git identity should the campaign's commits carry: an author, and any
