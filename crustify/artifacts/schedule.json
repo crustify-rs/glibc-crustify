@@ -449,7 +449,7 @@
       "foundational": false,
       "layer": 1,
       "sublayer": 0,
-      "status": "todo",
+      "status": "done",
       "depends_on": {
         "scheduled": [
           2
@@ -471,7 +471,43 @@
         }
       ],
       "packed_with": null,
-      "batches": []
+      "batches": [
+        {
+          "index": 0,
+          "link_unit": "libc",
+          "module": "libio/iofwrite.c",
+          "foundational": false,
+          "kind": "wrap",
+          "status": "done",
+          "items": [
+            {
+              "name": "fwrite",
+              "defined_in": "libio/iofwrite.c",
+              "kind": "function",
+              "field_users": [],
+              "typedefs": [],
+              "home": "src/libc/libio/iofwrite.rs"
+            }
+          ],
+          "commits": [
+            "d79690087aba0d091dcf1ef9122ed5fe545bbe2b"
+          ]
+        },
+        {
+          "index": 1,
+          "link_unit": "libc",
+          "module": "libio/iofwrite.c",
+          "foundational": false,
+          "kind": "review",
+          "status": "done",
+          "reviews": [],
+          "module_pass": true,
+          "commits": [
+            "38a241a9fbb608e035282550f44b3b18e99e4a48",
+            "2fe3ab231dd7bfe2f6b8bb434a24b3d4693326bd"
+          ]
+        }
+      ]
     }
   ]
 }
