@@ -1,8 +1,11 @@
 # Wave 3's write through a shared stream handle takes the stream's lock itself
 
-Status: `open`. Filed by glibc-crustify `wave-2/batch-0/run-1` (2026-11-13), under the
-default `repair` autonomy (`crustify/CRUSTIFY.md` gives no `evolution` answer): a correction
-to a campaign artifact the planner owns, proposed.
+Status: `landed`, as the alternative its Destination names, in glibc-crustify
+`wave-3/batch-0/run-1`'s landing (2026-11-13): `flockfile` and `funlockfile` are bound
+privately inside `fprintf`'s module, as the lock its one call takes, and the plan does not
+change. Filed by glibc-crustify `wave-2/batch-0/run-1` (2026-11-13), under the default
+`repair` autonomy (`crustify/CRUSTIFY.md` gives no `evolution` answer): a correction to a
+campaign artifact the planner owns, proposed.
 
 ## Signal
 
@@ -42,7 +45,18 @@ with the count returned, or `errno`'s `io::Error` on a negative return.
 
 ## Validation
 
-None yet. Wave 3's binder confirms it from `fprintf`'s analysis.
+Wave 3's binder confirmed it from `fprintf`'s analysis, and the assistant's task message
+settled the destination: the two routines are raw bindings in `fprintf.rs`'s `ffi_import`,
+allowlisted, with no safe API. `FileRef::print` holds the lock from before `fprintf` to
+after `errno` is read. Two unit tests show that the lock is what serializes the writes
+(`tests/unit_pub/fprintf.rs`). `writes_from_threads_never_interleave` shares one handle
+among 8 threads on a `FSETLOCKING_BYCALLER` stream. It passes, and with the binding's
+`flockfile` and `funlockfile` removed it fails three runs in three with interleaved lines
+(an `open_memstream` stream aborts in glibc instead).
+`print_waits_for_the_lock_on_a_stream_locked_by_its_caller` passes, and with them removed
+it sees the waiting thread's text written first. No consumer of the parent campaigns needs
+the lock routines as API of their own: `cli_opt_status_fprint`, `spec_name_fprint` and
+`llhttp__debug` each make one `fprintf` per message.
 
 ## Review
 

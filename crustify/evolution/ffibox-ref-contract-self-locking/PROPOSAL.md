@@ -55,6 +55,10 @@ own table, rather than as a new permission.
 ## Validation
 
 A documentation change. No reproducer: no current consumer's soundness changes.
+Wave 3 (`wave-3/batch-0/run-1`) now relies on it as the module pass foresaw:
+`FileRef::print` passes `stream.as_ptr().cast_mut()` to `flockfile`, `fprintf` and
+`funlockfile` (`src/libc/stdio_common/fprintf.rs`), each of which writes the stream under
+its lock.
 
 ## Review
 

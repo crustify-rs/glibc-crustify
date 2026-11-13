@@ -3,8 +3,10 @@
 pub const EPERM: i32 = 1;
 pub const ENOENT: i32 = 2;
 pub const EINTR: i32 = 4;
+pub const EBADF: i32 = 9;
 pub const EACCES: i32 = 13;
 pub const ENOTDIR: i32 = 20;
+pub const ENOSPC: i32 = 28;
 pub const O_WRONLY: i32 = 1;
 pub const O_CREAT: i32 = 64;
 pub const O_EXCL: i32 = 128;
@@ -15,6 +17,7 @@ unsafe extern "C" {
 pub type __mode_t = ::std::os::raw::c_uint;
 pub type __off_t = ::std::os::raw::c_long;
 pub type __off64_t = ::std::os::raw::c_long;
+pub type __FILE = _IO_FILE;
 pub type FILE = _IO_FILE;
 #[repr(C)]
 #[derive(Debug)]
@@ -167,6 +170,60 @@ impl Default for _IO_FILE {
     }
 }
 unsafe extern "C" {
+    pub fn fclose(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn fflush(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn fopen(
+        __filename: *const ::std::os::raw::c_char,
+        __modes: *const ::std::os::raw::c_char,
+    ) -> *mut FILE;
+}
+unsafe extern "C" {
+    pub fn fmemopen(
+        __s: *mut ::std::os::raw::c_void,
+        __len: usize,
+        __modes: *const ::std::os::raw::c_char,
+    ) -> *mut FILE;
+}
+unsafe extern "C" {
+    pub fn open_memstream(
+        __bufloc: *mut *mut ::std::os::raw::c_char,
+        __sizeloc: *mut usize,
+    ) -> *mut FILE;
+}
+unsafe extern "C" {
+    pub fn fprintf(
+        __stream: *mut FILE,
+        __format: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn ferror(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn flockfile(__stream: *mut FILE);
+}
+unsafe extern "C" {
+    pub fn ftrylockfile(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
+    pub fn funlockfile(__stream: *mut FILE);
+}
+pub const FSETLOCKING_QUERY: _bindgen_ty_10 = 0;
+pub const FSETLOCKING_INTERNAL: _bindgen_ty_10 = 1;
+pub const FSETLOCKING_BYCALLER: _bindgen_ty_10 = 2;
+pub type _bindgen_ty_10 = ::std::os::raw::c_uint;
+unsafe extern "C" {
+    pub fn __fsetlocking(
+        __fp: *mut FILE,
+        __type: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+unsafe extern "C" {
     pub fn malloc(__size: usize) -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
@@ -223,4 +280,10 @@ impl Default for tm {
             s.assume_init()
         }
     }
+}
+unsafe extern "C" {
+    pub fn fwide(
+        __fp: *mut __FILE,
+        __mode: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
 }

@@ -51,23 +51,23 @@ in Notes.
 
 - **branch** — `crustify/devel`, tip `<sha>`; `main` shipped at `<sha>`; crustify `<sha>`, ffibox `<sha>`, wavefront `<sha>`
 - **C test baseline** — not run: glibc is not built (the system's libc); disabled: its whole suite
-- **Rust LoC** — `349` non-test, `257` tests; **C LoC** — `<n>`
+- **Rust LoC** — `399` non-test, `719` tests; **C LoC** — `<n>`
 
 ### Coverage stats
 
 | | count | share | C LoC coverage | Rust LoC coverage |
 |---|---:|---:|---:|---:|
-| UB safe tests | `6` | — | — | `58.00`% |
+| UB safe tests | `6` | — | — | `33.72`% |
 | UB unsafe tests | `0` | — | — | — |
-| Equiv tests | `0` | — | — | — |
-| Unit tests | `7` | — | — | `100.00`% |
-| **Total tests** | **`13`** | — | — | **`100.00`%** |
+| Equiv tests | `6` | — | — | `39.53`% |
+| Unit tests | `23` | — | — | `100.00`% |
+| **Total tests** | **`35`** | — | — | **`100.00`%** |
 | total types | `2` | — | — | — |
 | ported types | `0` | `0`% | — | — |
 | wrapped types | `2` | `100`% | — | — |
 | total symbols | `3` | — | — | — |
 | ported symbols | `0` | `0`% | — | — |
-| wrapped symbols | `1` | `33`% | — | — |
+| wrapped symbols | `2` | `67`% | — | — |
 
 ### Module stats
 
@@ -203,25 +203,25 @@ Deterministic `ffimap`; no model.
 
 ### Batches
 
-`<provider>/<model>` via `<backend>`.
+`openrouter/anthropic/claude-opus-5.5` via `claude`.
 
 | module | wave | batch | objective | pass | symbols | loc | +LoC | cov (C/Rust) | $ | tokens | wall | $/symbol | $/loc |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
+| `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `1` | `821` | `+821/-1` | — / `100.00`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `<n>` | `<n>` | `+<n>/-<n>` | `<n>`% / `<n>`% | `$<n>` | `<n>M` | `<n>m<n>s` | `$<n>` | `$<n>` |
-| **Σ first** |  |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
+| **Σ first** |  |  |  |  | **`1`** | **`821`** | **`+821/-1`** | **— / `100.00`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 | **Σ review** |  |  |  |  | **`<n>`** | **`<n>`** | **`+<n>/-<n>`** | **`<n>`% / `<n>`%** | **`$<n>`** | **`<n>M`** | — | **`$<n>`** | **`$<n>`** |
 
 ### Batches: tests
 
-`<provider>/<model>` via `<backend>`.
+`openrouter/anthropic/claude-opus-5.5` via `claude`.
 
 | module | wave | batch | pass | +UB safe tests (+C/+Rust pp) | +UB unsafe tests (+C/+Rust pp) | +equiv tests (+C/+Rust pp) | +unit tests (+C/+Rust pp) |
 |---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | first | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
+| `libc/stdio-common/fprintf.c` | `3` | `0` | first | `+0` (—/`-24.28` pp) | `+0` (—/`+0.00` pp) | `+6` (—/`+39.53` pp) | `+16` (—/`+0.00` pp) |
 | `<link-unit>/<module>` | `<n>` | `<n>` | review | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) | `+<n>` (`+<n>`/`+<n>` pp) |
-| **Σ first** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
+| **Σ first** |  |  |  | **`+0` (—/`-24.28` pp)** | **`+0` (—/`+0.00` pp)** | **`+6` (—/`+39.53` pp)** | **`+16` (—/`+0.00` pp)** |
 | **Σ review** |  |  |  | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** | **`+<n>` (`+<n>`/`+<n>` pp)** |
 
 ### Batches: safety audit
@@ -230,10 +230,10 @@ Deterministic `ffimap`; no model.
 
 | module | wave | batch | objective | pass | pub raw ptr (safe) | pub raw ptr | pub void ptr | pub unsafe fn | C borrow | slice borrow | unsafe loc % | unsafe blocks | Send/Sync | C by value | Drop/Clone | deref outside impl |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `<link-unit>/<module>` | `<n>` | `<n>` | wrap | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
+| `libc/stdio-common/fprintf.c` | `3` | `0` | wrap | first | `±0` | `±0` | `±0` | `±0` | `±0` | `±0` | `-6.20` pp | `+3` | `±0` | `±0` | `±0` | `±0` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | port | first | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
 | `<link-unit>/<module>` | `<n>` | `<n>` | wrap | review | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` pp | `±<n>` | `±<n>` | `±<n>` | `±<n>` | `±<n>` |
-| **Σ first** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
+| **Σ first** |  |  |  |  | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** | **`-6.20` pp** | **`+3`** | **`±0`** | **`±0`** | **`±0`** | **`±0`** |
 | **Σ review** |  |  |  |  | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>` pp** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** | **`±<n>`** |
 
 ### Batches — review: PoC + reports
@@ -363,3 +363,35 @@ in the Types tables, and its API measure (`ffimap api diff`) keeps both items. T
 coverage was measured again, over `src/`, as the earlier batch measured it: `100.00`% (50
 of 50 lines), unchanged, since the landing changes no executable line. No safety-audit
 counter moved.
+
+### Wave 3: `fprintf`, written under the stream's lock
+
+`stdio-common/fprintf.c`'s wave 3 binds `fprintf` as `FileRef::print(&self, &str) ->
+io::Result<usize>`, the fixed-arity form: Rust formats, and the text goes to
+`fprintf(stream, "%s", text)` between `flockfile` and `funlockfile`. So it lands in the
+stream's own buffer and holds the lock whatever the stream's locking mode. The two lock
+routines are raw bindings inside the region, with no API of their own. A `write_fmt` method
+beside it lets `write!` format into one locked call, which returns the count as C's does. It
+carries no anchor of its own, and `ffimap api` counts it as an extension of `st::_IO_FILE`
+and `tdf::FILE`, whose handles it is a method of. `fn::fprintf` is `new`, and the two
+unattributed modules are kept. The dashboard has no `Batches: API stability` table to hold
+that measure.
+
+The binding clears `errno` before the call and restores it unless the call failed and set
+it. glibc returns `-1` without setting `errno` on a wide-oriented stream and when a cookie
+stream's write fails silently, as `fmemopen`'s does once its storage is full, so a failure
+that leaves `errno` at 0 is an `io::ErrorKind::Other` error with no OS code. The
+equivalence suite checks this against C on the same streams.
+
+The row's `+LoC` and `loc` count the regenerated raw bindings (63 lines: `fprintf`,
+`flockfile`, `funlockfile`, and the stream routines and constants the tests open streams
+with) with the module and the tests. The tests' stream fixture, `tests/fixtures/stream.rs`,
+is shared by `unit_pub` and `equiv_pub`. `+UB safe tests` is `+0`: no safe producer of a
+`FileRef` exists until wave 4's `stderr`, so the batch's tests open their streams through
+the raw bindings. The suite's `-24.28` pp comes from the denominator alone: it covers the same
+lines over 86 lines rather than 50. Rust line coverage stays at `100.00`% (86 of 86 lines,
+101 of 101 regions; `fprintf.rs` 36 of 36), measured as wave 2's was. Branch coverage is not
+instrumented, so no branch figure exists. `EOVERFLOW`, for a text over `INT_MAX` bytes, is the
+one C outcome no test reaches, as it needs more than 4 GiB. The safety audit's `unsafe loc %`
+(`-6.20` pp) and `unsafe blocks` (`+3`) are the region's three calls. No public `unsafe fn` and
+no raw pointer reaches the safe interface.

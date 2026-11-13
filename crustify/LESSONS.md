@@ -15,8 +15,10 @@ own under `crustify/tmp/`:
 - format: `cargo +<the workspace's nightly> fmt --all -- --check`, since `rustfmt.toml`
   uses nightly-only options;
 - ASan: on that nightly, `--target x86_64-unknown-linux-gnu`, with
-  `RUSTFLAGS="-Zsanitizer=address -Cforce-frame-pointers=yes"`; TSan: the same with
-  `-Zsanitizer=thread` and `-Zbuild-std`. They instrument the Rust alone, since the
+  `RUSTFLAGS="-Zsanitizer=address -Cforce-frame-pointers=yes"`, and `RUSTDOCFLAGS` the
+  same for the doctests, run with `--doc` on their own, which otherwise fail to link
+  (`undefined symbol: __asan_init`); TSan: the same with `-Zsanitizer=thread` and
+  `-Zbuild-std`. They instrument the Rust alone, since the
   system's glibc is not instrumented, so TSan sees no race inside glibc;
 - coverage: Rust only, measured as the parent's `crustify/scripts/coverage/baseline.sh`
   does, over a scratch copy without `c/`. Its `report.py` rejects the scope, since
@@ -32,5 +34,25 @@ own under `crustify/tmp/`:
 
 **Evidence.** wave-2/batch-0/run-1 (`libio/genops.c`) worked these out by hand.
 wave-2/batch-1/run-1, its module pass, wrote the `end-gates` runner by hand too.
+wave-3/batch-0/run-1 (`stdio-common/fprintf.c`) found that the `struct_tm_h` doctest fails to
+link under ASan without `RUSTDOCFLAGS`, and passes with it.
 
 **Scope.** Every batch until the tree gets a variant script.
+
+## A threaded stream test writes a file stream, not an `open_memstream` one
+
+**Rule.** A test that writes one stream from several threads, to check that its writes
+hold the stream's lock, opens a file stream (`fopen`), whose buffer glibc allocates once.
+An `open_memstream` stream grows its buffer with `malloc` and `free` inside each write,
+under the stream's lock. TSan intercepts those calls but not glibc's lock, which is an
+uninstrumented futex, so it reports every two threads' reallocations as a data race in
+`free` (`_IO_str_overflow`), and the suite fails under TSan though the writes are
+serialized. A test with one writing thread may use either.
+
+**Evidence.** wave-3/batch-0/run-1 (`stdio-common/fprintf.c`):
+`writes_from_threads_never_interleave` over `open_memstream` was reported under TSan, and was
+clean over `fopen` in five runs. It still fails without the binding's `flockfile`, with
+interleaved lines over `fopen` and a glibc abort over `open_memstream`.
+
+**Scope.** Every TSan run over tests that share a C stream between threads, `stderr`'s
+(wave 4) included.

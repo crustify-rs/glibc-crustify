@@ -9,6 +9,13 @@ type tm
 # crustify-rs/ffmpeg-bindings).
 type _IO_FILE|FILE
 
+# stdio-common/fprintf.c: the formatted write libgit2's cli/opt.c and llhttp's api.c make to a
+# caller's stream or stderr, and libavformat's dump.c to a caller's stream, which the
+# binding makes as fprintf(stream, "%s", text) inside flockfile and funlockfile, whatever the
+# stream's locking mode (crustify-rs/libgit2-bindings, crustify-rs/ffmpeg-bindings).
+function fprintf
+function flockfile|funlockfile
+
 # csu/errno-loc.c: the calling thread's errno, which libgit2's util/errors.c and its tests
 # read and write (crustify-rs/libgit2-bindings).
 function __errno_location
@@ -23,3 +30,11 @@ var SIGABRT
 function malloc|realloc|free
 function strlen
 function umask
+
+# libio's fopen, open_memstream, fmemopen, fclose, fflush and ferror, the orientation fwide sets,
+# stdio_ext.h's locking mode with ftrylockfile, and the errors a write reports: the streams
+# fprintf.c's tests open, write and close, in each state a C caller can hand one in.
+function fopen|open_memstream|fmemopen|fclose|fflush|ferror|fwide
+function __fsetlocking|ftrylockfile
+var FSETLOCKING_BYCALLER
+var EBADF|ENOSPC
