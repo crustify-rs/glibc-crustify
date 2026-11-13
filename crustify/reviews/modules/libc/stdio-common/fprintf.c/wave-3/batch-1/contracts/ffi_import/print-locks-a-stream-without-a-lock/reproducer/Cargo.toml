@@ -1,0 +1,15 @@
+[package]
+name = "print-locks-a-stream-without-a-lock"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+glibc-bindings = { path = "../../../../../../../../../../../.." }
+ffibox = { git = "https://github.com/crustify-rs/ffibox", rev = "40621a29bffaede7a212c67eeadf803df6f1be29" }
+
+# As the workspace does: ffibox resolves to the campaign's local checkout.
+[patch."https://github.com/crustify-rs/ffibox"]
+ffibox = { path = "/opt/venv/share/ffibox" }
