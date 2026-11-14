@@ -1,6 +1,6 @@
 # ffibox: the shared seam's contract for a C object that locks itself
 
-Status: `open`: the change is ffibox `eefc57a` on `libgit2-crustify/evolution/ffibox-ref-contract-self-locking`, made on
+Status: `open`: the change is ffibox `568bcb5` on `libgit2-crustify/evolution/ffibox-ref-contract-self-locking`, made on
 2026-11-14 at the user's direction after the triage of open proposals, awaiting its review.
 
 Goal: Safety, its soundness measure; ffibox's G9 and G12.
@@ -59,7 +59,7 @@ The row for `EVOLUTION.md`, copied in when the change lands:
 
 | change | from | landed as | signal answered | recurrence signal | status |
 |---|---|---|---|---|---|
-| the shared handle's contract allows writes by an object that locks itself, under a lock every read of what they reach takes too; `as_ptr` serves such routines only for a type Rust never holds by value; an exclusive handle excludes C under a lock too | `glibc-crustify`, `ffibox-ref-contract-self-locking` | ffibox `eefc57a` | three runs put self-locking routines on a shared handle, as `docs/ownership.md` allows, against a trait contract that forbade every write | a `contracts` finding on a shared handle of a self-locking object whose binding the trait's text forbids, or a `ub` finding of the `assumed-locking` or `aliasing-at-the-boundary` pattern on one | watched; weakens a check: a shared handle's contract passes adoptions the old text failed, and `as_ptr` is no longer read-only for a self-locking object |
+| the shared handle's contract allows writes by an object that locks itself, under a lock every read of what they reach takes too; such a routine writes through a shared handle, by any path, only for a type Rust never holds by value; an exclusive handle excludes C under a lock too | `glibc-crustify`, `ffibox-ref-contract-self-locking` | ffibox `568bcb5` | three runs put self-locking routines on a shared handle, as `docs/ownership.md` allows, against a trait contract that forbade every write | a `contracts` finding on a shared handle of a self-locking object whose binding the trait's text forbids, or a `ub` finding of the `assumed-locking` or `aliasing-at-the-boundary` pattern on one | watched; weakens a check: a shared handle's contract passes adoptions the old text failed, and `as_ptr` is no longer read-only for a self-locking object |
 
 ## Validation
 
@@ -82,3 +82,8 @@ no write gets the same exception; `as_ptr`'s allowance holds only for a type Rus
 by value; `mut_from_ptr` excludes C under a lock too, which it had inherited unseen; the lock
 is asked of every read of what the writes reach, not of every read; and the row is marked as
 weakening a check. The macro's comment is back to its original words.
+
+`review-2` (Opus 5.5, `$0.69`), on `eefc57a`: **rejected**, one fix: the limit to a type Rust never
+holds by value sat on `as_ptr` alone, and a routine can take its pointer another way, which
+Miri still showed as undefined behaviour. Made as `568bcb5`: `CCell`'s rule carries the limit, for
+any path.
