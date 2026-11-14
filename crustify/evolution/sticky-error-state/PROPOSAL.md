@@ -103,3 +103,7 @@ Not yet reviewed.
 
 `review-1` (session `0187d611-78e7-4af2-8c3e-c40ea42ab544`, Opus 5.5, `$1.39`, 4m46s), on `83374c5`: **rejected**, on two fixes one deletion makes: the rule's scope takes in `errno`, for which reading before and after is the wrong method, and the documentation clause named one unseen failure of the two the evidence shows. It reran the validation: the six named tests fail under a read after the call alone. Made as `2c21af3`, on `c59838e`: the sentence ends at "by its change alone, with nothing else able to change it in between".
 Its report is the longest `result` of `crustify/artifacts/evolution/sticky-error-state/review-1/stream.jsonl`.
+
+`review-2` (session `0f94cf0f-0a06-4b2c-8d29-6ea39e5491e0`, Opus 5.5, `$0.32`, 52s), on `2c21af3`: **approved**. Each required fix of
+review-1 is resolved, the fix opened no contradiction and the row matches the change.
+It agrees now with the open `errno-failure-without-errno`, which edits the same sentence.
