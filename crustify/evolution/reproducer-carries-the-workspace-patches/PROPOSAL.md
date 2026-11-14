@@ -1,9 +1,8 @@
 # reviewing: a reproducer repeats the affected workspace's `[patch]` tables
 
-Status: `open`. Filed by glibc-crustify `wave-4/batch-1/run-1` (2026-11-13), under the
-default `repair` autonomy. `reviewing` is the reviewer's to evolve. This run proposes the
-change rather than making it: no Crustify working branch of this campaign exists, and the
-checkout its runs read is `libgit2-crustify/devel`, the parent campaign's own.
+Status: `superseded` by libgit2-crustify's `reproducer-repeats-the-workspace-patches`, on
+2026-11-14: the same signal, which that proposal cites from both campaigns. This proposal's
+sentence is copied into it.
 
 ## Signal
 
