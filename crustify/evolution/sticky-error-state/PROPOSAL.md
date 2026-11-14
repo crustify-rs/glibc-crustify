@@ -84,11 +84,11 @@ call's", `watched`. Its `landed as` cell names the commit, which its landing fil
 The row for `EVOLUTION.md`, copied in when the change lands. The change was made as crustify
 `57fd7a3`, which also edited `EVOLUTION.md`; on 2026-11-14 it was put on the working branch's
 tip as `83374c5`, the same diff without that edit, since a change's row is drafted in its
-proposal. It sits on crustify `7b738b9`, and its review reads `83374c5`.
+proposal. Review-1 read `83374c5`; the commit is now `2c21af3`.
 
 | change | from | landed as | signal answered | recurrence signal | status |
 |---|---|---|---|---|---|
-| a failure read from sticky error state is its change, read before and after the call | `glibc-crustify`, `sticky-error-state` | crustify `83374c5` | the Errors rule read error state only after the call, which reports a sticky flag's earlier failure as the call's | a review finding of a binding that reports an earlier failure, left in sticky error state, as its own call's | watched |
+| a failure read from sticky error state is its change | `glibc-crustify`, `sticky-error-state` | crustify `2c21af3` | the Errors rule read error state only after the call, which reports a sticky flag's earlier failure as the call's | a review finding of a binding that reports an earlier failure, left in sticky error state, as its own call's | watched |
 
 ## Validation
 
@@ -100,3 +100,6 @@ above fail without it. A rerun of the batch under the change is not needed to sh
 ## Review
 
 Not yet reviewed.
+
+`review-1` (session `0187d611-78e7-4af2-8c3e-c40ea42ab544`, Opus 5.5, `$1.39`, 4m46s), on `83374c5`: **rejected**, on two fixes one deletion makes: the rule's scope takes in `errno`, for which reading before and after is the wrong method, and the documentation clause named one unseen failure of the two the evidence shows. It reran the validation: the six named tests fail under a read after the call alone. Made as `2c21af3`, on `c59838e`: the sentence ends at "by its change alone, with nothing else able to change it in between".
+Its report is the longest `result` of `crustify/artifacts/evolution/sticky-error-state/review-1/stream.jsonl`.
