@@ -1,6 +1,6 @@
 # binding-symbols: a global the C contract lets a program set is mutable, whatever its known users do
 
-Status: `open`: the change is crustify `30fa33f` on `libgit2-crustify/evolution/global-the-program-may-set`, made on
+Status: `open`: the change is crustify `73b04ee` on `libgit2-crustify/evolution/global-the-program-may-set`, made on
 2026-11-14 at the user's direction after the triage of open proposals, awaiting its review.
 
 Goal: Safety, its soundness measure.
@@ -29,17 +29,14 @@ The spec: `binding-symbols` §2, Globals.
 
 ## Change
 
-After the list of access disciplines, add:
+In `binding-symbols` § Globals, after the list of access disciplines:
 
-> The accesses that decide are those the C declaration's contract allows, not those the
-> campaign's C makes: a global the library documents as one a program may set, such as
-> libc's standard streams, `environ` or `optarg`, is otherwise mutable however the code
-> the campaign sees uses it, since the crate cannot see every program it is linked into.
-> Where it holds a pointer, what it points to may be freed by the C that reassigns it, so
-> a safe accessor never lends what it names beyond the call: the accessor is `unsafe`,
-> its caller vouching for the lifetime it chooses, or a safe operation reads the global
-> and uses what it names within one call, as the C expression does, holding the lock C
-> takes there.
+> The accesses that decide are those the C declaration's contract allows, not only those the
+> campaign's C makes, since the crate cannot see every program it is linked into. A global
+> the library documents as one a program may set, such as libc's standard streams, is
+> otherwise mutable, however the C the campaign sees uses it. Where such a global holds a
+> pointer, the C that closes or reassigns it may free what it pointed to, so the accessor is
+> `unsafe`, its caller vouching for the lifetime it chooses.
 
 ## Record
 
@@ -47,7 +44,7 @@ The row for `EVOLUTION.md`, copied in when the change lands:
 
 | change | from | landed as | signal answered | recurrence signal | status |
 |---|---|---|---|---|---|
-| a global's access discipline follows from what its C declaration's contract allows, so one a program may set is otherwise mutable and a safe accessor never lends what it points to beyond a call | `glibc-crustify`, `global-the-program-may-set` | crustify `30fa33f` | "every C access" was read as the campaign's C: a safe handle to a standard stream outlived the program's `fclose`, a use-after-free from safe code | a `ub` finding on a safe accessor of a global a program outside the campaign's C may set or free | watched |
+| a global's access discipline follows from what its C declaration's contract allows, so one a program may set is otherwise mutable and, where it holds a pointer, its accessor is `unsafe` | `glibc-crustify`, `global-the-program-may-set` | crustify `73b04ee` | "every C access" was read as the campaign's C: a safe handle to a standard stream outlived the program's `fclose`, a use-after-free from safe code | a finding on a safe accessor of a global a program outside the campaign's C may set or free | watched |
 
 ## Validation
 
@@ -67,3 +64,9 @@ nothing of it.
 ## Review
 
 Not reviewed.
+
+`review-1` of the change (Opus 5.5, `$1.08`), on `30fa33f`: **rejected**, two fixes required, both by
+removal, made as `73b04ee`: the alternative of a safe operation under the lock C takes contradicted
+the section's own list and its rule that a recursive lock does not count, and no validation
+exercised it; and the row's recurrence signal named `ub` where the finding was a `contracts`
+one. The first two sentences, the placement and the validation held.
