@@ -1,9 +1,8 @@
 # A failure read from sticky error state is its change, read before and after the call
 
-Status: `open`. Filed by glibc-crustify `wave-5/batch-0/run-1` (2026-11-13), under the
-`evolve` autonomy the settings give (the parent `libgit2-crustify`'s answer). The change is
-made, on Crustify's `libgit2-crustify/evolution/sticky-error-state` (`57fd7a3`), forked from
-`libgit2-crustify/devel` at `cc84106`. It awaits its review, which is another run's.
+Status: `landed` as crustify `466535e` on `libgit2-crustify/devel`, on 2026-11-14, with the
+user's approval: it is the commit its review approved as `2c21af3`, rebased with its diff
+unchanged (the same `git patch-id`).
 
 ## Signal
 
@@ -88,7 +87,7 @@ proposal. Review-1 read `83374c5`; the commit is now `2c21af3`.
 
 | change | from | landed as | signal answered | recurrence signal | status |
 |---|---|---|---|---|---|
-| a failure read from sticky error state is its change | `glibc-crustify`, `sticky-error-state` | crustify `2c21af3` | the Errors rule read error state only after the call, which reports a sticky flag's earlier failure as the call's | a review finding of a binding that reports an earlier failure, left in sticky error state, as its own call's | watched |
+| a failure read from sticky error state is its change | `glibc-crustify`, `sticky-error-state` | crustify `466535e` | the Errors rule read error state only after the call, which reports a sticky flag's earlier failure as the call's | a review finding of a binding that reports an earlier failure, left in sticky error state, as its own call's | watched |
 
 ## Validation
 
