@@ -79,6 +79,17 @@ Its record entry, drafted in `EVOLUTION.md` in the same commit: recurrence signa
 finding of a binding that reports an earlier failure, left in sticky error state, as its own
 call's", `watched`. Its `landed as` cell names the commit, which its landing fills.
 
+## Record
+
+The row for `EVOLUTION.md`, copied in when the change lands. The change was made as crustify
+`57fd7a3`, which also edited `EVOLUTION.md`; on 2026-11-14 it was put on the working branch's
+tip as `83374c5`, the same diff without that edit, since a change's row is drafted in its
+proposal. It sits on crustify `7b738b9`, and its review reads `83374c5`.
+
+| change | from | landed as | signal answered | recurrence signal | status |
+|---|---|---|---|---|---|
+| a failure read from sticky error state is its change, read before and after the call | `glibc-crustify`, `sticky-error-state` | crustify `83374c5` | the Errors rule read error state only after the call, which reports a sticky flag's earlier failure as the call's | a review finding of a binding that reports an earlier failure, left in sticky error state, as its own call's | watched |
+
 ## Validation
 
 No run failed for want of the rule: the batch worked it out before landing. What the
