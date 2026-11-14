@@ -1,9 +1,9 @@
 # binding-symbols: a global the C contract lets a program set is mutable, whatever its known users do
 
-Status: `open`. Filed by glibc-crustify `wave-4/batch-1/run-1` (2026-11-13), under the
-default `repair` autonomy (`crustify/CRUSTIFY.md` gives no `evolution` answer). The rule is
-`binding-symbols`', which is not the reviewer's to evolve. The planner's guidance in
-`decomposition` follows it.
+Status: `open`: the change is crustify `30fa33f` on `libgit2-crustify/evolution/global-the-program-may-set`, made on
+2026-11-14 at the user's direction after the triage of open proposals, awaiting its review.
+
+Goal: Safety, its soundness measure.
 
 ## Signal
 
@@ -40,6 +40,14 @@ After the list of access disciplines, add:
 > its caller vouching for the lifetime it chooses, or a safe operation reads the global
 > and uses what it names within one call, as the C expression does, holding the lock C
 > takes there.
+
+## Record
+
+The row for `EVOLUTION.md`, copied in when the change lands:
+
+| change | from | landed as | signal answered | recurrence signal | status |
+|---|---|---|---|---|---|
+| a global's access discipline follows from what its C declaration's contract allows, so one a program may set is otherwise mutable and a safe accessor never lends what it points to beyond a call | `glibc-crustify`, `global-the-program-may-set` | crustify `30fa33f` | "every C access" was read as the campaign's C: a safe handle to a standard stream outlived the program's `fclose`, a use-after-free from safe code | a `ub` finding on a safe accessor of a global a program outside the campaign's C may set or free | watched |
 
 ## Validation
 
