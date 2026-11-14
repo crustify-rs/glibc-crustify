@@ -1,7 +1,7 @@
 # binding-symbols: a global the C contract lets a program set is mutable, whatever its known users do
 
-Status: `open`: the change is crustify `73b04ee` on `libgit2-crustify/evolution/global-the-program-may-set`, made on
-2026-11-14 at the user's direction after the triage of open proposals, awaiting its review.
+Status: `landed` as crustify `c8e8ffb` (record `76cdb65`) on `libgit2-crustify/devel`, on 2026-11-14, once its
+review approved it.
 
 Goal: Safety, its soundness measure.
 
@@ -44,7 +44,7 @@ The row for `EVOLUTION.md`, copied in when the change lands:
 
 | change | from | landed as | signal answered | recurrence signal | status |
 |---|---|---|---|---|---|
-| a global's access discipline follows from what its C declaration's contract allows, so one a program may set is otherwise mutable and, where it holds a pointer, its accessor is `unsafe` | `glibc-crustify`, `global-the-program-may-set` | crustify `73b04ee` | "every C access" was read as the campaign's C: a safe handle to a standard stream outlived the program's `fclose`, a use-after-free from safe code | a finding on a safe accessor of a global a program outside the campaign's C may set or free | watched |
+| a global's access discipline follows from what its C declaration's contract allows, so one a program may set is otherwise mutable and, where it holds a pointer, its accessor is `unsafe` | `glibc-crustify`, `global-the-program-may-set` | crustify `c8e8ffb` | "every C access" was read as the campaign's C: a safe handle to a standard stream outlived the program's `fclose`, a use-after-free from safe code | a finding on a safe accessor of a global a program outside the campaign's C may set or free | watched |
 
 ## Validation
 
@@ -70,3 +70,6 @@ removal, made as `73b04ee`: the alternative of a safe operation under the lock C
 the section's own list and its rule that a recursive lock does not count, and no validation
 exercised it; and the row's recurrence signal named `ub` where the finding was a `contracts`
 one. The first two sentences, the placement and the validation held.
+
+`review-2` (Opus 5.5, `$0.28`), on `73b04ee`: **approved**. It landed as `c8e8ffb`, that commit rebased, its
+file the same in the commit and its parent.
