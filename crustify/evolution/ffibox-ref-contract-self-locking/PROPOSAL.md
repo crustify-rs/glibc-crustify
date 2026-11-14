@@ -1,7 +1,8 @@
 # ffibox: the shared seam's contract for a C object that locks itself
 
-Status: `open`: the change is ffibox `568bcb5` on `libgit2-crustify/evolution/ffibox-ref-contract-self-locking`, made on
-2026-11-14 at the user's direction after the triage of open proposals, awaiting its review.
+Status: `landed` as ffibox `568bcb5` on its `libgit2-crustify/devel` (record: crustify `3f75a75`), on
+2026-11-14, once its review approved it. It weakens a check: the user reads it before ffibox's
+`devel` takes it.
 
 Goal: Safety, its soundness measure; ffibox's G9 and G12.
 
@@ -87,3 +88,5 @@ weakening a check. The macro's comment is back to its original words.
 holds by value sat on `as_ptr` alone, and a routine can take its pointer another way, which
 Miri still showed as undefined behaviour. Made as `568bcb5`: `CCell`'s rule carries the limit, for
 any path.
+
+`review-3` (Opus 5.5, `$0.27`), on `568bcb5`: **approved**; it weakens a check, as the row marks.

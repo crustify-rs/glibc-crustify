@@ -12,7 +12,7 @@ the assistant alone, as each batch's proposals land.
 | `disclose-scope-for-the-campaigns-own-crate` | A disclosure goes to a project outside the campaign, never to the campaign's own crate | `open` | — | — |
 | `doc-alias-equal-to-name` | conventions: no `doc(alias)` where the Rust item's name is the anchor's path | `superseded` | — | — |
 | `errno-failure-without-errno` | A failure that sets no `errno` is not reported as the stale one | `open` | — | — |
-| `ffibox-ref-contract-self-locking` | ffibox: the shared seam's contract for a C object that locks itself | `open` | — | — |
+| `ffibox-ref-contract-self-locking` | ffibox: the shared seam's contract for a C object that locks itself | `landed` | — | — |
 | `global-the-program-may-set` | binding-symbols: a global the C contract lets a program set is mutable, whatever its known users do | `landed` | — | — |
 | `plan-from-landings-before-a-schedule` | A side campaign's first plan: what landed before a schedule, and how far its decomposition reaches | `open` | — | — |
 | `reproducer-carries-the-workspace-patches` | reviewing: a reproducer repeats the affected workspace's `[patch]` tables | `superseded` | — | — |
