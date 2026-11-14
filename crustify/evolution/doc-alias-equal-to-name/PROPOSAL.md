@@ -1,9 +1,7 @@
 # conventions: no `doc(alias)` where the Rust item's name is the anchor's path
 
-Status: `open`. Filed by glibc-crustify `wave-4/batch-0/run-1` (2026-11-13), under the
-default `repair` autonomy (`crustify/CRUSTIFY.md` gives no `evolution` answer): a defect in
-the spec that does not block the batch, proposed, since `conventions` is not the binder's to
-evolve.
+Status: `superseded` by libgit2-crustify's `doc-alias-equal-to-the-name`, on 2026-11-14: the same
+signal, settled there as this proposal asked: the alias is dropped, and `ffimap api` exempts it.
 
 ## Signal
 
