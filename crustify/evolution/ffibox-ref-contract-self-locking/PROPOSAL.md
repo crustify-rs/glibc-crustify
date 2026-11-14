@@ -1,8 +1,9 @@
 # ffibox: the shared seam's contract for a C object that locks itself
 
-Status: `open`. Filed by glibc-crustify `wave-2/batch-0/run-1` (2026-11-13), under the
-default `repair` autonomy: a documentation defect in ffibox that does not block the batch,
-proposed.
+Status: `open`: the change is ffibox `2ce020f` on `libgit2-crustify/evolution/ffibox-ref-contract-self-locking`, made on
+2026-11-14 at the user's direction after the triage of open proposals, awaiting its review.
+
+Goal: Safety, its soundness measure; ffibox's G9 and G12.
 
 ## Signal
 
@@ -51,6 +52,14 @@ and found the self-locking shape that `docs/ownership.md` gives sound for `FILE`
 recursive lock rules out `CGuarded`. Both text changes widen what a producer may claim of a
 shared handle. A review should mark them as relaxing ffibox's stated contract to match its
 own table, rather than as a new permission.
+
+## Record
+
+The row for `EVOLUTION.md`, copied in when the change lands:
+
+| change | from | landed as | signal answered | recurrence signal | status |
+|---|---|---|---|---|---|
+| the shared handle's contract allows writes under a synchronization every operation reachable through the handle takes, and `as_ptr` serves C routines that write under their own lock | `glibc-crustify`, `ffibox-ref-contract-self-locking` | ffibox `2ce020f` | three runs put self-locking routines on a shared handle, as `docs/ownership.md` allows, against a trait contract that forbade every write | a `contracts` finding on a shared handle of a self-locking object whose binding the trait's text forbids, or a `ub` finding of the `assumed-locking` pattern on one | watched |
 
 ## Validation
 
