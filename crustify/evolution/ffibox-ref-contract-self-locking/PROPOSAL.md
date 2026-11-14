@@ -1,6 +1,6 @@
 # ffibox: the shared seam's contract for a C object that locks itself
 
-Status: `open`: the change is ffibox `2ce020f` on `libgit2-crustify/evolution/ffibox-ref-contract-self-locking`, made on
+Status: `open`: the change is ffibox `eefc57a` on `libgit2-crustify/evolution/ffibox-ref-contract-self-locking`, made on
 2026-11-14 at the user's direction after the triage of open proposals, awaiting its review.
 
 Goal: Safety, its soundness measure; ffibox's G9 and G12.
@@ -59,7 +59,7 @@ The row for `EVOLUTION.md`, copied in when the change lands:
 
 | change | from | landed as | signal answered | recurrence signal | status |
 |---|---|---|---|---|---|
-| the shared handle's contract allows writes under a synchronization every operation reachable through the handle takes, and `as_ptr` serves C routines that write under their own lock | `glibc-crustify`, `ffibox-ref-contract-self-locking` | ffibox `2ce020f` | three runs put self-locking routines on a shared handle, as `docs/ownership.md` allows, against a trait contract that forbade every write | a `contracts` finding on a shared handle of a self-locking object whose binding the trait's text forbids, or a `ub` finding of the `assumed-locking` pattern on one | watched |
+| the shared handle's contract allows writes by an object that locks itself, under a lock every read of what they reach takes too; `as_ptr` serves such routines only for a type Rust never holds by value; an exclusive handle excludes C under a lock too | `glibc-crustify`, `ffibox-ref-contract-self-locking` | ffibox `eefc57a` | three runs put self-locking routines on a shared handle, as `docs/ownership.md` allows, against a trait contract that forbade every write | a `contracts` finding on a shared handle of a self-locking object whose binding the trait's text forbids, or a `ub` finding of the `assumed-locking` or `aliasing-at-the-boundary` pattern on one | watched; weakens a check: a shared handle's contract passes adoptions the old text failed, and `as_ptr` is no longer read-only for a self-locking object |
 
 ## Validation
 
@@ -72,3 +72,13 @@ its lock.
 ## Review
 
 Not reviewed.
+
+## Review of the change
+
+`review-1` (Opus 5.5, `$1.58`), on `2ce020f`: **rejected**, five fixes required, all made as `eefc57a`.
+It showed under Miri that a write through `as_ptr` is undefined behaviour on a handle built
+from `&self`, over a value Rust holds inline. The fixes: `CCell`'s own rule that `Ref` offers
+no write gets the same exception; `as_ptr`'s allowance holds only for a type Rust never holds
+by value; `mut_from_ptr` excludes C under a lock too, which it had inherited unseen; the lock
+is asked of every read of what the writes reach, not of every read; and the row is marked as
+weakening a check. The macro's comment is back to its original words.
